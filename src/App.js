@@ -1,26 +1,48 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import './scss/styles.scss'
 import './App.css';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { Sidebar } from './components'
+import { Home, Callback, Me } from './pages'
+
+let SC = window.SC
+
+const PrivateRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        localStorage.getItem('sc_accessToken') === null ?
+          <Redirect
+            to="/login"
+          />
+          :
+          <Component
+            {...props}
+          />
+      }
+    />
+  )
+}
 
 class App extends Component {
+  componentDidMount() {
+    SC.initialize({
+      client_id: 'AKm0rmaY0ScS4y0FyUdvWMyfmtMdUYh6',
+      redirect_uri: 'http://localhost:3000/callback'
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <>
+        <Sidebar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/callback" component={Callback} />
+          <PrivateRoute exact path="/me/:id/:section?" component={Me} />
+        </Switch>
+      </>
     );
   }
 }

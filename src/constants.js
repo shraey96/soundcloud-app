@@ -1,0 +1,12 @@
+export const USER_AUTH = 'USER_AUTH';
+export const USER_SET_INFO = 'USER_SET_INFO';
+export const LOGIN_USER_SUCCESS = 'LOGIN_USER_SUCCESS';
+export const USER_LIKES = 'USER_LIKES';
+export const USER_FOLLOWERS = 'USER_FOLLOWERS';
+export const USER_FOLLOWING = 'USER_FOLLOWING';
+export const USER_PLAY_HISTORY = 'USER_PLAY_HISTORY';
+
+export const PLAY_AUDIO = 'PLAY_AUDIO';
+export const ENABLE_SHUFFLE = 'ENABLE_SHUFFLE';
+export const SET_PLAYLIST = 'SET_PLAYLIST';
+export const ADD_TRACK = 'ADD_TRACK';

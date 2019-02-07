@@ -1,0 +1,8 @@
+.sidebar-container{
+    border: 1px solid red;
+    display: inline-flex;
+    flex-direction: column;
+    // height: calc(100vh - 80px);
+    height: 100vh;
+    width: 22%;
+}

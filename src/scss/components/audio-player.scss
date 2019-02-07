@@ -1,0 +1,91 @@
+.audio-player-container{
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    padding: 10px 40px;
+    background: rgba(0,0,0,0.8);
+
+    .audio-player-info{
+        width: 25%;
+    }
+
+    .audio-player-info-container{
+        display: flex;
+        align-items: center;
+        img{
+            height: 52px;
+            width: 52px;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+        & > div{
+            display: flex;
+            flex-direction: column;
+            span{
+                color: wheat;
+                &:first-child{
+                    margin-bottom: 5px;
+                }
+            }
+        }
+    }
+
+    .audio-player-controls{
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+        .audio-player-timeline{
+            display: flex;
+            align-items: center;
+            flex: 1;
+            // .timeline-behind{
+            //     width: 100%;
+            //     position: relative;
+            //     height: 2px;
+            //     border: 1px solid red;
+            //     margin-top: 10px;
+            //     span{
+            //         position: absolute;
+            //         height: 4px;
+            //         background: pink;
+            //         left: 0;
+                    
+            //     }
+            // }
+            input[type=range] {
+                // -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+                width: 100%; /* Specific width is required for Firefox. */
+                background: blue; /* Otherwise white in Chrome */
+              }
+              
+              input[type=range]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+              }
+              
+              input[type=range]:focus {
+                outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+              }
+              
+              input[type=range]::-ms-track {
+                width: 100%;
+                cursor: pointer;
+              
+                /* Hides the slider so custom styles can be added */
+                background: transparent; 
+                border-color: transparent;
+                color: transparent;
+              }
+        }
+    }
+    .audio-player-side{
+        width: 25%;
+        height: 20px;
+    }
+}
+
+.audio-tag{
+    display: none;
+}
