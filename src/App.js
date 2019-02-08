@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './scss/styles.scss'
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Sidebar } from './components'
+import { Sidebar, AudioPlayer } from './components'
 import { Home, Callback, Me } from './pages'
 
 let SC = window.SC
@@ -42,6 +42,7 @@ class App extends Component {
           <Route exact path="/callback" component={Callback} />
           <PrivateRoute exact path="/me/:id/:section?" component={Me} />
         </Switch>
+        <AudioPlayer />
       </>
     );
   }

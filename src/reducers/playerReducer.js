@@ -8,7 +8,7 @@ import {
 const initialState = {
     isAudioPlaying: false,
     playlist: [],
-    activeTrackId: '',
+    activeTrackId: {},
     isShuffleMode: false
 }
 
@@ -19,7 +19,10 @@ export default function (state = initialState, action) {
         case 'ENABLE_SHUFFLE':
             return { ...state, isShuffleMode: !state.isAudioPlaying }
         case 'SET_PLAYLIST':
-            return { ...state, playlist: action.payload }
+            return {
+                ...state,
+                playlist: action.payload,
+            }
 
         default:
             return state

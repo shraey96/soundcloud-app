@@ -9,7 +9,7 @@
     background: rgba(0,0,0,0.8);
 
     .audio-player-info{
-        width: 25%;
+        // width: 25%;
     }
 
     .audio-player-info-container{
@@ -36,7 +36,7 @@
     .audio-player-controls{
         display: flex;
         justify-content: space-between;
-        flex: 1;
+        // flex: 1;
         .audio-player-timeline{
             display: flex;
             align-items: center;
@@ -81,8 +81,9 @@
         }
     }
     .audio-player-side{
-        width: 25%;
+        width: 25px;
         height: 20px;
+        border: 1px solid red;
     }
 }
 
