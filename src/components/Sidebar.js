@@ -27,8 +27,12 @@ class Sidebar extends Component {
     componentDidMount() {
         console.log('Mounted Sidebar')
         if (localStorage.getItem('sc_accessToken') !== null) {
-            axios.defaults.headers.common['Authorization'] = 'OAuth ' + localStorage.getItem('sc_accessToken');
-            this.props.userAuthLoading(true)
+            this.fetchUserData()
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.userAuth && localStorage.getItem('sc_accessToken') === null) {
             this.fetchUserData()
         }
     }
@@ -41,6 +45,8 @@ class Sidebar extends Component {
     }
 
     fetchUserData = () => {
+        axios.defaults.headers.common['Authorization'] = 'OAuth ' + localStorage.getItem('sc_accessToken');
+        this.props.userAuthLoading(true)
         getUserInfo()
             .then(async (userInfo) => {
                 const [likedTracks, followers, followings, playHistory] = await Promise.all([getUserLikedTracks(null, userInfo.id), getUserFollowers(), getUserFollowings(), getUserPlayHistory()])
