@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import { connect } from 'react-redux'
 import deepEqual from 'deep-equal'
+import { MdPlayArrow, MdPause } from 'react-icons/md';
 import { formatAudioTime } from '../utils'
 import { playAudio, setPlaylist } from '../actions'
 
@@ -20,7 +21,7 @@ class AudioPlayer extends Component {
             },
             trackIndex: 0
         }
-        this.proxyURL = `https://cors-anywhere.herokuapp.com/`
+        this.proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
     }
 
     componentDidMount() {
@@ -160,7 +161,14 @@ class AudioPlayer extends Component {
                             >
                                 {isAudioPlaying ?
                                     'Pause' : 'Play'}
+
                             </button>
+                            <div className="audio-play-pause">
+                                <span className={isAudioPlaying ? 'animate-pause' : 'animate-play'}>
+                                    <MdPlayArrow className="play-icon" />
+                                    <MdPause className="pause-icon" />
+                                </span>
+                            </div>
                             <button
                                 onClick={e => {
                                     this.seekTrack('next')

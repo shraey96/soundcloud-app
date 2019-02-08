@@ -6,7 +6,7 @@ const followers = []
 const following = []
 const playHistory = []
 
-const proxyURL = `https://cors-anywhere.herokuapp.com/`
+const proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
 
 const getUserInfo = () => {
     return axios.get(proxyURL + `https://api.soundcloud.com/me`)
