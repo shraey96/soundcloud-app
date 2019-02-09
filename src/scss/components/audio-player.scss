@@ -36,7 +36,7 @@
     .audio-player-controls{
         display: flex;
         justify-content: space-between;
-        // flex: 1;
+        flex: 1;
         .audio-player-timeline{
             display: flex;
             align-items: center;
@@ -81,7 +81,7 @@
         }
     }
     .audio-player-side{
-        width: 25px;
+        width: 25%;
         height: 20px;
         border: 1px solid red;
     }
