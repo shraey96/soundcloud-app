@@ -1,9 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux'
 import deepEqual from 'deep-equal'
+import { arrayMove } from 'react-sortable-hoc'
+import { SortablePlayer } from './SortablePlayer'
+
+import {
+    MdPlayArrow, MdPause, MdSkipNext,
+    MdSkipPrevious, MdVolumeDown, MdVolumeUp,
+    MdPlaylistPlay, MdShuffle
+} from 'react-icons/md'
+
 import { formatAudioTime } from '../utils'
-import { playAudio, setPlaylist } from '../actions'
+import { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist } from '../actions'
+
 
 class AudioPlayer extends Component {
 
@@ -18,14 +28,14 @@ class AudioPlayer extends Component {
                 duration: '',
                 currentTime: 0
             },
-            trackIndex: 0
+            trackIndex: 0,
+            isShuffleActive: false,
+            isPlayListMenuOpen: false
         }
-        this.proxyURL = `https://cors-anywhere.herokuapp.com/`
+        this.proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
     }
 
     componentDidMount() {
-        console.log('Mounted Audio Player')
-        // this.fetchTracks()
         window.addEventListener("keydown", this.handleKeyDown)
     }
 
@@ -34,13 +44,27 @@ class AudioPlayer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!deepEqual(nextProps.playlist, this.props.playlist)) {
+        if (!deepEqual(nextProps.playlist, this.props.playlist) && !nextProps.playListReOrder) {
             const trackOne = nextProps.playlist[0].track
             this.setState({
                 trackIndex: 0
             }, () => {
                 this.setPlayContent(trackOne)
             })
+        }
+    }
+
+    componentDidUpdate() {
+        // if (document.querySelector('.marquee')) {
+        //     let x = document.querySelector('.marquee').children[0].getBoundingClientRect().left
+        //     console.log(x)
+        // }
+    }
+
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        const reOrderList = arrayMove([...this.props.playlist], oldIndex, newIndex)
+        if (!deepEqual(reOrderList, this.props.playlist)) {
+            this.props.reOrderPlaylist(arrayMove([...this.props.playlist], oldIndex, newIndex))
         }
     }
 
@@ -58,30 +82,6 @@ class AudioPlayer extends Component {
         }
     }
 
-    fetchTracks = () => {
-        axios.get(`https://api.soundcloud.com/tracks?linked_partitioning=1&limit=50&offset=0&client_id=a281614d7f34dc30b665dfcaa3ed7505&q=illenium`)
-            .then((response) => {
-                let randomTrack = response.data.collection[Math.floor(Math.random() * response.data.collection.length)]
-                this.setState({
-                    playContent: {
-                        streamURL: randomTrack.stream_url + `?client_id=a281614d7f34dc30b665dfcaa3ed7505`,
-                        coverArt: randomTrack.artwork_url.replace('large.jpg', 't300x300.jpg'),
-                        trackName: randomTrack.title,
-                        artistName: randomTrack.user.username,
-                        trackId: randomTrack.id,
-                        duration: (randomTrack.duration / 1000)
-                    }
-                }, () => {
-                    this.props.setPlaylist(response.data.collection)
-                })
-            })
-    }
-
-    randomizeTrack = (track = {}) => {
-        let randomTrack = this.state.trackList[Math.floor(Math.random() * this.state.trackList.length)]
-        console.log(randomTrack)
-    }
-
     seekTrack = (type) => {
         const { trackIndex } = this.state
         if (type === 'next') {
@@ -94,7 +94,6 @@ class AudioPlayer extends Component {
             }
         } else {
             if (trackIndex !== 0 && trackIndex < (this.props.playlist.length - trackIndex)) {
-                console.log(999)
                 this.setState({
                     trackIndex: this.state.trackIndex - 1
                 }, () => {
@@ -125,58 +124,58 @@ class AudioPlayer extends Component {
         })
     }
 
+    handleTrackRemove = (track) => {
+        const playlist = [...this.props.playlist].filter(t => t.track_id !== track.track_id)
+        this.props.reOrderPlaylist(playlist)
+    }
+
     render() {
-        const { playContent, trackIndex } = this.state
+        const { playContent, trackIndex, isShuffleActive, isPlayListMenuOpen } = this.state
         const { isAudioPlaying } = this.props
 
         return (
             <>
                 <div className="audio-player-container">
-                    <div className="audio-player-info">
-                        <div className="audio-player-info-container">
-                            <img src={playContent.coverArt} />
-                            <div>
+                    <div className="audio-player-info-container">
+                        <img src={playContent.coverArt} />
+                        <div>
+                            <span className={playContent.trackName.length > 27 && 'marquee'}>
                                 <span>{playContent.trackName}</span>
-                                <span>{playContent.artistName}</span>
-                            </div>
+                            </span>
+                            <span>{playContent.artistName}</span>
                         </div>
                     </div>
                     <div className="audio-player-controls">
                         <div className="audio-player-seek">
-                            <button
+                            <MdSkipPrevious
                                 onClick={e => {
                                     this.seekTrack('prev')
                                 }}
                                 disabled={trackIndex === 0}
-                            >
-                                Previous
-                            </button>
-                            <button
+                                className="player-icon"
+                            />
+                            <div
+                                className="audio-play-pause"
                                 onClick={e => {
                                     isAudioPlaying ?
                                         this._audio.pause() :
                                         this._audio.play()
                                 }}
                             >
-                                {isAudioPlaying ?
-                                    'Pause' : 'Play'}
-                            </button>
-                            <button
+                                <span className={isAudioPlaying ? 'animate-pause' : 'animate-play'}>
+                                    <MdPlayArrow className="player-icon play-icon" />
+                                    <MdPause className="player-icon pause-icon" />
+                                </span>
+                            </div>
+                            <MdSkipNext
                                 onClick={e => {
                                     this.seekTrack('next')
                                 }}
-                            >
-                                Next
-                            </button>
+                                className="player-icon"
+                            />
                         </div>
                         <div className="audio-player-timeline">
                             <span>{formatAudioTime(playContent.currentTime)}</span>
-                            {/* <div className="timeline-behind">
-                                <span
-                                    className="timeline-forward"
-                                    style={{ width: `${(playContent.currentTime / playContent.duration) * 100}%` }}
-                                ></span>
-                            </div> */}
                             <input
                                 type="range"
                                 min="0"
@@ -189,12 +188,64 @@ class AudioPlayer extends Component {
                         </div>
                     </div>
                     <div className="audio-player-side">
-                        <span>
-                            x
-                        </span>
-                        <span>
-                            y
-                        </span>
+                        <MdShuffle
+                            className={`player-icon shuffle ${!isShuffleActive && 'inactive'}`}
+                            onClick={e => {
+                                this.setState({ isShuffleActive: !isShuffleActive })
+                            }}
+                        />
+                        <div className="volume-container">
+                            {
+                                this._audio && (
+                                    this._audio.volume < 0.5 ?
+                                        <MdVolumeDown className="player-icon" />
+                                        :
+                                        <MdVolumeUp className="player-icon" />
+                                )
+                            }
+                            <input
+                                className="volume-slider"
+                                type="range"
+                                min="0"
+                                max="1"
+                                value={this._audio ? this._audio.volume : 0}
+                                step="0.05"
+                                onChange={e => this._audio.volume = e.target.value}
+                            />
+                        </div>
+                        <div className="playlist-container">
+                            <MdPlaylistPlay className="player-icon playlist"
+                                onClick={e => this.setState({ isPlayListMenuOpen: !isPlayListMenuOpen })} />
+                            {
+                                this.props.playlist.length > 0 &&
+                                <SortablePlayer
+                                    items={this.props.playlist}
+                                    onSortEnd={this.onSortEnd}
+                                    className={`playlist-menu ${isPlayListMenuOpen && 'open'}`}
+                                    onPlayClick={(sTrack, index) => {
+                                        if (sTrack.track_id === playContent.trackId) {
+                                            if (isAudioPlaying) {
+                                                this._audio.pause()
+                                            } else {
+                                                this._audio.play()
+                                            }
+                                            this.props.playAudio(sTrack.trackId)
+                                        } else {
+                                            this.setState({ trackIndex: index },
+                                                () => this.setPlayContent(sTrack.track))
+                                        }
+                                    }
+                                    }
+                                    onRemoveClick={sTrack => this.handleTrackRemove(sTrack)}
+                                    distance={5}
+                                    trackId={playContent.trackId}
+                                    helperClass="sortable-helper"
+                                    isOpen={isPlayListMenuOpen}
+                                    isAudioPlaying={isAudioPlaying}
+                                    handleClose={() => this.setState({ isPlayListMenuOpen: false })}
+                                />
+                            }
+                        </div>
                     </div>
                 </div>
                 <audio preload="metadata"
@@ -236,6 +287,6 @@ const mapStateToProps = function (state) {
     return state.player
 }
 
-AudioPlayer = (connect(mapStateToProps, { playAudio, setPlaylist })(AudioPlayer))
+AudioPlayer = (connect(mapStateToProps, { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist })(AudioPlayer))
 
 export { AudioPlayer };

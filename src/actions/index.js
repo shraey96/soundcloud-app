@@ -1,4 +1,4 @@
 // export * from './'
-export { toggleShuffle, playAudio, setPlaylist } from './playerActions'
+export { toggleShuffle, playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist } from './playerActions'
 
 export { userLoginSuccess, userAuthLoading } from './userActions'

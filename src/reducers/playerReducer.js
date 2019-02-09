@@ -2,14 +2,17 @@ import {
     PLAY_AUDIO,
     ENABLE_SHUFFLE,
     SET_PLAYLIST,
-    ADD_TRACK
+    ADD_TRACK,
+    REORDER_PLAYLIST,
+    REORDER_PLAYLIST_TOGGLE,
 } from '../constants'
 
 const initialState = {
     isAudioPlaying: false,
     playlist: [],
-    activeTrackId: {},
-    isShuffleMode: false
+    activeTrackId: null,
+    isShuffleMode: false,
+    playListReOrder: false
 }
 
 export default function (state = initialState, action) {
@@ -22,6 +25,17 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 playlist: action.payload,
+            }
+        case 'REORDER_PLAYLIST':
+            return {
+                ...state,
+                playlist: action.payload,
+                playListReOrder: true
+            }
+        case 'REORDER_PLAYLIST_TOGGLE':
+            return {
+                ...state,
+                playListReOrder: !state.playListReOrder
             }
 
         default:

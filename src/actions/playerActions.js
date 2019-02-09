@@ -2,6 +2,8 @@ import {
     PLAY_AUDIO,
     ENABLE_SHUFFLE,
     SET_PLAYLIST,
+    REORDER_PLAYLIST,
+    REORDER_PLAYLIST_TOGGLE,
     ADD_TRACK
 } from '../constants'
 
@@ -30,6 +32,29 @@ export const setPlaylist = (playList = []) => {
             ({
                 type: SET_PLAYLIST,
                 payload: playList
+            })
+    }
+}
+
+export const reOrderPlaylist = (playList = []) => {
+    return dispatch => {
+        dispatch
+            ({
+                type: REORDER_PLAYLIST,
+                payload: playList
+            })
+        dispatch
+            ({
+                type: REORDER_PLAYLIST_TOGGLE,
+            })
+    }
+}
+
+export const toggleReorderPlaylist = () => {
+    return dispatch => {
+        dispatch
+            ({
+                type: REORDER_PLAYLIST_TOGGLE,
             })
     }
 }
