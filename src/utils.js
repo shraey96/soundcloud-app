@@ -5,6 +5,7 @@ const likedTracks = []
 const followers = []
 const following = []
 const playHistory = []
+const playList = []
 
 const proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
 
@@ -28,6 +29,23 @@ const getUserLikedTracks = (url, id) => {
             return _.flattenDeep(likedTracks).reduce((a, b) => {
                 return a[b.track.id] = b.track, a;
             }, {});
+        }
+    }).catch(err => {
+        console.log(err)
+    })
+}
+
+const getUserPlaylist = (url, id) => {
+    if (!url) {
+        url = `https://api-v2.soundcloud.com/users/${id}/playlists/liked_and_owned?client_id=CoeTA81rlM4PNaXs33YeRXZZAixneGwv&limit=200&offset=0`
+    }
+    return axios.get(proxyURL + url).then((response) => {
+        if (response.data.next_href) {
+            playList.push([...response.data.collection])
+            return getUserPlaylist(response.data.next_href)
+        } else {
+            playList.push([response.data.collection])
+            return _.flattenDeep(playList)
         }
     }).catch(err => {
         console.log(err)
@@ -107,5 +125,6 @@ export {
     getUserFollowers,
     getUserFollowings,
     getUserPlayHistory,
-    getUserInfo
+    getUserInfo,
+    getUserPlaylist
 }

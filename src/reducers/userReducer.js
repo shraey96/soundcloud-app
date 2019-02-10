@@ -14,6 +14,7 @@ const initialState = {
     userProfile: {},
     userFollowers: [],
     userFollowing: [],
+    userPlaylist: [],
     userLikes: {},
     userPlayHistory: {},
     loading: false

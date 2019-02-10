@@ -152,9 +152,9 @@
                 padding: 4px;
                     &::before{
                     opacity: 1;
-                    }
-                            
+                    }       
                 }
+                
                 .sortable-playlist-tracks{
                     border-bottom: 1px solid black;
                     display: flex;
@@ -194,6 +194,14 @@
                                 left: 8px;
                             }
                         }
+                        .hover-marquee{
+                            padding: 4px;
+                            &:hover{ 
+                            animation: hoverMarquee 5s linear;
+                            animation-delay: 1s;
+                            animation-iteration-count: infinite;
+                            }
+                        }
                 }
             }
         }
@@ -210,6 +218,18 @@
     to {opacity: 0; transform: rotate(360deg); display: none;}
 }
 
+@keyframes hoverMarquee {
+    0%{
+        text-indent: 0%;
+    }
+    80%{
+        text-indent: -160%;
+    }
+    100%{
+        text-indent: -160%;
+    }
+}
+
 @keyframes marquee {
     from {
         // text-indent: 100%;
@@ -220,6 +240,17 @@
         // text-indent: -200%;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 .player-icon{
     font-size: 25px;
@@ -315,3 +346,26 @@ input[type=range] {
             opacity: 0;
         }
 }
+
+
+/* scrollbar width */
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* scrollbar Track */
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, .2);
+    border-radius: 10px;
+  }
+  
+  /* scrollbar Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, .2);
+    border-radius: 10px;
+  }
+  
+  /* scrollbar Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, .3);
+  }

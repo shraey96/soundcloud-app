@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import './scss/styles.scss'
-import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Sidebar, AudioPlayer } from './components'
 import { Home, Callback, Me } from './pages'
+import './scss/styles.scss'
 
 let SC = window.SC
 

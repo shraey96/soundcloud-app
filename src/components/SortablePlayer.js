@@ -16,7 +16,7 @@ const SortableItem = SortableElement(({ item, trackId, onRemoveClick, onPlayClic
             }}
         >
             <img src={item.track.artwork_url} />
-            <span>
+            <span className={item.track.title.length >= 35 && 'hover-marquee'}>
                 {item.track.title}
             </span>
             <MdClose

@@ -45,12 +45,14 @@ class AudioPlayer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!deepEqual(nextProps.playlist, this.props.playlist) && !nextProps.playListReOrder) {
+            console.log(nextProps)
             const trackOne = nextProps.playlist[0].track
-            this.setState({
-                trackIndex: 0
-            }, () => {
-                this.setPlayContent(trackOne)
-            })
+            console.log(trackOne)
+            // this.setState({
+            //     trackIndex: 0
+            // }, () => {
+            //     this.setPlayContent(trackOne)
+            // })
         }
     }
 
@@ -104,7 +106,15 @@ class AudioPlayer extends Component {
     }
 
     setPlayContent = async (track) => {
-        let streamURL = track.stream_url ? track.streamURL + `?client_id=a281614d7f34dc30b665dfcaa3ed7505` : ''
+        console.log(track)
+        return
+        if (!track.artwork_url) {
+            console.log('no')
+            return
+        }
+
+        let streamURL = track.stream_url ? track.stream_url + `?client_id=a281614d7f34dc30b665dfcaa3ed7505` : ''
+
         if (!streamURL) {
             let streamURLProg = track.media.transcodings.find(x => x.format.protocol === "progressive").url
             let { data } = await axios.get(this.proxyURL + streamURLProg)
