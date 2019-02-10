@@ -15,7 +15,7 @@ const SortableItem = SortableElement(({ item, trackId, onRemoveClick, onPlayClic
                     onPlayClick(item, index)
             }}
         >
-            <img src={item.track.artwork_url} />
+            <img src={item.track.artwork_url || require('../static/artwork_alt.png')} />
             <span className={item.track.title.length >= 35 && 'hover-marquee'}>
                 {item.track.title}
             </span>

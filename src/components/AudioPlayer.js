@@ -45,14 +45,11 @@ class AudioPlayer extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (!deepEqual(nextProps.playlist, this.props.playlist) && !nextProps.playListReOrder) {
-            console.log(nextProps)
-            const trackOne = nextProps.playlist[0].track
-            console.log(trackOne)
-            // this.setState({
-            //     trackIndex: 0
-            // }, () => {
-            //     this.setPlayContent(trackOne)
-            // })
+            this.setState({
+                trackIndex: 0
+            }, () => {
+                this.setPlayContent(nextProps.playlist[0].track)
+            })
         }
     }
 
@@ -106,16 +103,8 @@ class AudioPlayer extends Component {
     }
 
     setPlayContent = async (track) => {
-        console.log(track)
-        return
-        if (!track.artwork_url) {
-            console.log('no')
-            return
-        }
-
         let streamURL = track.stream_url ? track.stream_url + `?client_id=a281614d7f34dc30b665dfcaa3ed7505` : ''
-
-        if (!streamURL) {
+        if (streamURL === '') {
             let streamURLProg = track.media.transcodings.find(x => x.format.protocol === "progressive").url
             let { data } = await axios.get(this.proxyURL + streamURLProg)
             streamURL = data.url
@@ -123,7 +112,7 @@ class AudioPlayer extends Component {
         this.setState({
             playContent: {
                 streamURL: streamURL,
-                coverArt: track.artwork_url.replace('large.jpg', 't300x300.jpg'),
+                coverArt: track.artwork_url ? track.artwork_url.replace('large.jpg', 't300x300.jpg') : require('../static/artwork_alt.png'),
                 trackName: track.title,
                 artistName: track.user.username,
                 trackId: track.id,
