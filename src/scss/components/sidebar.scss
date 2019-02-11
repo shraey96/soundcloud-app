@@ -61,8 +61,7 @@
 
     .user-playlist{
         .user-playlist-container{
-            // height: calc(100vh - 430px);
-            height: 120px;
+            height: calc(100vh - 580px);
             overflow-y: auto;
             .user-playlist-item{
               padding: 10px 0;
