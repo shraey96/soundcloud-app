@@ -1,5 +1,6 @@
 import axios from 'axios'
 import _ from 'lodash'
+import appBase from './secret';
 
 const likedTracks = []
 const followers = []
@@ -7,7 +8,7 @@ const following = []
 const playHistory = []
 const playList = []
 
-const proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
+const proxyURL = appBase.proxyURL
 
 const getUserInfo = () => {
     return axios.get(proxyURL + `https://api.soundcloud.com/me`)
@@ -37,7 +38,7 @@ const getUserLikedTracks = (url, id) => {
 
 const getUserPlaylist = (url, id) => {
     if (!url) {
-        url = `https://api-v2.soundcloud.com/users/${id}/playlists/liked_and_owned?client_id=CoeTA81rlM4PNaXs33YeRXZZAixneGwv&limit=200&offset=0`
+        url = `https://api-v2.soundcloud.com/users/${id}/playlists/liked_and_owned?client_id=${appBase.clientId}&limit=200&offset=0`
     }
     return axios.get(proxyURL + url).then((response) => {
         if (response.data.next_href) {

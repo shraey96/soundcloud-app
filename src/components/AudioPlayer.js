@@ -9,12 +9,13 @@ import {
     MdPlayArrow, MdPause, MdSkipNext,
     MdSkipPrevious, MdVolumeDown, MdVolumeUp,
     MdQueueMusic, MdShuffle, MdRepeat, MdRepeatOne,
-    MdFavoriteBorder
+    MdFavorite
 } from 'react-icons/md'
 
 import { formatAudioTime } from '../utils'
-import { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, } from '../actions'
+import { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, toggleTrackLike } from '../actions'
 
+import appBase from '../secret'
 
 class AudioPlayer extends Component {
 
@@ -34,11 +35,11 @@ class AudioPlayer extends Component {
             repeatMode: 0,
             isPlayListMenuOpen: false
         }
-        this.proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
     }
 
     componentDidMount() {
         window.addEventListener("keydown", this.handleKeyDown)
+        console.log(appBase)
     }
 
     componentWillUnmount() {
@@ -55,20 +56,6 @@ class AudioPlayer extends Component {
         }
     }
 
-    componentDidUpdate() {
-        // if (document.querySelector('.marquee')) {
-        //     let x = document.querySelector('.marquee').children[0].getBoundingClientRect().left
-        //     console.log(x)
-        // }
-    }
-
-    onSortEnd = ({ oldIndex, newIndex }) => {
-        const reOrderList = arrayMove([...this.props.player.playlist], oldIndex, newIndex)
-        if (!deepEqual(reOrderList, this.props.player.playlist)) {
-            this.props.reOrderPlaylist(arrayMove([...this.props.player.playlist], oldIndex, newIndex))
-        }
-    }
-
     handleKeyDown = (e) => {
         if (e.keyCode === 32) {
             this.setState({
@@ -80,6 +67,13 @@ class AudioPlayer extends Component {
         if (e.ctrlKey) {
             e.keyCode === 39 && this.seekTrack('next')
             e.keyCode === 37 && this.seekTrack('prev')
+        }
+    }
+
+    onSortEnd = ({ oldIndex, newIndex }) => {
+        const reOrderList = arrayMove([...this.props.player.playlist], oldIndex, newIndex)
+        if (!deepEqual(reOrderList, this.props.player.playlist)) {
+            this.props.reOrderPlaylist(arrayMove([...this.props.player.playlist], oldIndex, newIndex))
         }
     }
 
@@ -116,20 +110,21 @@ class AudioPlayer extends Component {
     }
 
     setPlayContent = async (track) => {
-        let streamURL = track.stream_url ? track.stream_url + `?client_id=a281614d7f34dc30b665dfcaa3ed7505` : ''
+        let streamURL = track.stream_url ? track.stream_url + `?client_id=${appBase.clientId}` : ''
         if (streamURL === '') {
             let streamURLProg = track.media.transcodings.find(x => x.format.protocol === "progressive").url
-            let { data } = await axios.get(this.proxyURL + streamURLProg)
+            let { data } = await axios.get(appBase.proxyURL + streamURLProg)
             streamURL = data.url
         }
         this.setState({
             playContent: {
+                ...track,
                 streamURL: streamURL,
                 coverArt: track.artwork_url ? track.artwork_url.replace('large.jpg', 't300x300.jpg') : require('../static/artwork_alt.png'),
                 trackName: track.title,
                 artistName: track.user.username,
                 trackId: track.id,
-                duration: (track.duration / 1000)
+                duration: (track.duration / 1000),
             },
         }, () => {
             this._audio.play()
@@ -202,14 +197,15 @@ class AudioPlayer extends Component {
                         </div>
                     </div>
                     <div className="audio-player-side">
-                        <MdFavoriteBorder
-                            className={`player-icon med ${userLikes[playContent.trackId] && 'liked'}`}
+                        <MdFavorite
+                            className={`player-icon inactive med ${userLikes[playContent.trackId] && 'liked'}`}
                             onClick={() => {
-                                console.log(userLikes[playContent.trackId])
                                 if (userLikes[playContent.trackId]) {
                                     console.log('liked')
+                                    this.props.toggleTrackLike(playContent, false)
                                 } else {
                                     console.log('not liked')
+                                    this.props.toggleTrackLike(playContent, true)
                                 }
                             }}
                         />
@@ -331,6 +327,8 @@ const mapStateToProps = function ({ player, user }) {
     return { player, user }
 }
 
-AudioPlayer = (connect(mapStateToProps, { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist })(AudioPlayer))
+AudioPlayer = (connect(mapStateToProps,
+    { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, toggleTrackLike }
+)(AudioPlayer))
 
 export { AudioPlayer };

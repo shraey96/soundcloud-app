@@ -6,7 +6,8 @@ import {
     USER_PLAY_HISTORY,
     USER_SET_INFO,
     LOGIN_USER_SUCCESS,
-    USER_AUTH_LOADING
+    USER_AUTH_LOADING,
+    UPDATE_USER_LIKES
 } from '../constants'
 
 const initialState = {
@@ -34,6 +35,11 @@ export default function (state = initialState, action) {
                 userAuth: true,
                 loading: false,
                 ...action.payload
+            }
+        case 'UPDATE_USER_LIKES':
+            return {
+                ...state,
+                userLikes: action.payload
             }
 
         default:
