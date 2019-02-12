@@ -110,6 +110,9 @@
         justify-content: flex-end;
         .player-icon{
             margin-left: 20px;
+            &.no-margin{
+                margin: 0;
+            }
         }
         .volume-container{
             display: flex;

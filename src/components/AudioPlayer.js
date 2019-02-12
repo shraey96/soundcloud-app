@@ -145,8 +145,8 @@ class AudioPlayer extends Component {
         const { playContent, trackIndex, isShuffleActive, isPlayListMenuOpen, repeatMode } = this.state
         const { isAudioPlaying } = this.props.player
         const { userLikes } = this.props.user
-        console.log(this.state)
-        console.log(this.props)
+        // console.log(this.state)
+        // console.log(this.props)
         return (
             <>
                 <div className="audio-player-container">

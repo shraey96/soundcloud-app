@@ -28,8 +28,8 @@ const SortableItem = SortableElement(({ item, trackId, onRemoveClick, onPlayClic
             />
             {
                 (item.track_id === trackId && isAudioPlaying) ?
-                    <MdPause className="player-icon" /> :
-                    <MdPlayArrow className="player-icon" />
+                    <MdPause className="player-icon no-margin" /> :
+                    <MdPlayArrow className="player-icon no-margin" />
             }
         </div>
     )
@@ -47,7 +47,8 @@ class SortablePlayer extends Component {
 
     handleClickOutside = (e) => {
         const playListIconClick = document.querySelector('.playlist-container').firstElementChild.contains(e.target)
-        if (this.props.isOpen && this._sortPlayer.classList.contains('open') && !playListIconClick) {
+        const playListContainer = document.querySelector('.playlist-menu').contains(e.target)
+        if (this.props.isOpen && this._sortPlayer.classList.contains('open') && !playListIconClick && !playListContainer) {
             this.props.handleClose()
         }
     }
