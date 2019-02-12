@@ -108,11 +108,13 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        .player-icon{
+            margin-left: 20px;
+        }
         .volume-container{
             display: flex;
             align-items: center;
             width: 100px;
-            margin-left: 25px;
         }
         .playlist-container{
             position: relative;
@@ -244,14 +246,6 @@
 
 
 
-
-
-
-
-
-
-
-
 .player-icon{
     font-size: 25px;
     transition: all 0.4s ease-in;
@@ -259,7 +253,7 @@
     color: $base_color;
     opacity: 1;
     transition: all 0.4s ease-in-out;
-    &.shuffle{
+    &.med{
         font-size: 20px;
     }
     &.inactive{
@@ -267,8 +261,7 @@
     }
     &.playlist{
         padding-top: 6px;
-        margin-left: 25px;
-        margin-right: 25px;
+        margin-left: 22px;
     }
 }
 

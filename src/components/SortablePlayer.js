@@ -39,19 +39,18 @@ class SortablePlayer extends Component {
 
     componentDidMount() {
         window.addEventListener('mouseup', this.handleClickOutside, false)
-        // window.addEventListener('keyup', this.handleClickOutside)
     }
 
     componentWillUnmount() {
         window.removeEventListener('mouseup', this.handleClickOutside, false)
-        // window.removeEventListener('keyup', this.handleClickOutside)
     }
 
-    // handleClickOutside = (e) => {
-    //     if (this.props.isOpen && this._sortPlayer.classList.contains('open')) {
-    //         this.props.handleClose()
-    //     }
-    // }
+    handleClickOutside = (e) => {
+        const playListIconClick = document.querySelector('.playlist-container').firstElementChild.contains(e.target)
+        if (this.props.isOpen && this._sortPlayer.classList.contains('open') && !playListIconClick) {
+            this.props.handleClose()
+        }
+    }
 
 
     shouldComponentUpdate(nextProps, nextState) {

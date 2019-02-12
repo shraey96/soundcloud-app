@@ -8,11 +8,12 @@ import { SortablePlayer } from './SortablePlayer'
 import {
     MdPlayArrow, MdPause, MdSkipNext,
     MdSkipPrevious, MdVolumeDown, MdVolumeUp,
-    MdPlaylistPlay, MdShuffle
+    MdQueueMusic, MdShuffle, MdRepeat, MdRepeatOne,
+    MdFavoriteBorder
 } from 'react-icons/md'
 
 import { formatAudioTime } from '../utils'
-import { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist } from '../actions'
+import { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, } from '../actions'
 
 
 class AudioPlayer extends Component {
@@ -30,6 +31,7 @@ class AudioPlayer extends Component {
             },
             trackIndex: 0,
             isShuffleActive: false,
+            repeatMode: 0,
             isPlayListMenuOpen: false
         }
         this.proxyURL = `https://cryptic-ravine-67258.herokuapp.com/`
@@ -44,11 +46,11 @@ class AudioPlayer extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!deepEqual(nextProps.playlist, this.props.playlist) && !nextProps.playListReOrder) {
+        if (!deepEqual(nextProps.player.playlist, this.props.player.playlist) && !nextProps.player.playListReOrder) {
             this.setState({
                 trackIndex: 0
             }, () => {
-                this.setPlayContent(nextProps.playlist[0].track)
+                this.setPlayContent(nextProps.player.playlist[0].track)
             })
         }
     }
@@ -61,9 +63,9 @@ class AudioPlayer extends Component {
     }
 
     onSortEnd = ({ oldIndex, newIndex }) => {
-        const reOrderList = arrayMove([...this.props.playlist], oldIndex, newIndex)
-        if (!deepEqual(reOrderList, this.props.playlist)) {
-            this.props.reOrderPlaylist(arrayMove([...this.props.playlist], oldIndex, newIndex))
+        const reOrderList = arrayMove([...this.props.player.playlist], oldIndex, newIndex)
+        if (!deepEqual(reOrderList, this.props.player.playlist)) {
+            this.props.reOrderPlaylist(arrayMove([...this.props.player.playlist], oldIndex, newIndex))
         }
     }
 
@@ -82,21 +84,32 @@ class AudioPlayer extends Component {
     }
 
     seekTrack = (type) => {
-        const { trackIndex } = this.state
+        const { trackIndex, repeatMode } = this.state
+        const { playlist } = this.props
         if (type === 'next') {
             if (trackIndex >= 0) {
-                this.setState({
-                    trackIndex: this.state.trackIndex + 1,
-                }, () => {
-                    this.setPlayContent(this.props.playlist[this.state.trackIndex].track)
-                })
+                if (repeatMode === 2) {
+                    this.setPlayContent(playlist[this.state.trackIndex].track)
+                } else if (repeatMode === 1 && trackIndex === (playlist.length - 1)) {
+                    this.setState({
+                        trackIndex: 0
+                    }, () => {
+                        this.setPlayContent(playlist[0].track)
+                    })
+                } else {
+                    this.setState({
+                        trackIndex: this.state.trackIndex + 1,
+                    }, () => {
+                        this.setPlayContent(playlist[this.state.trackIndex].track)
+                    })
+                }
             }
         } else {
-            if (trackIndex !== 0 && trackIndex < (this.props.playlist.length - trackIndex)) {
+            if (trackIndex !== 0 && trackIndex < (playlist.length - trackIndex)) {
                 this.setState({
                     trackIndex: this.state.trackIndex - 1
                 }, () => {
-                    this.setPlayContent(this.props.playlist[this.state.trackIndex].track)
+                    this.setPlayContent(playlist[this.state.trackIndex].track)
                 })
             }
         }
@@ -124,14 +137,16 @@ class AudioPlayer extends Component {
     }
 
     handleTrackRemove = (track) => {
-        const playlist = [...this.props.playlist].filter(t => t.track_id !== track.track_id)
+        const playlist = [...this.props.player.playlist].filter(t => t.track_id !== track.track_id)
         this.props.reOrderPlaylist(playlist)
     }
 
     render() {
-        const { playContent, trackIndex, isShuffleActive, isPlayListMenuOpen } = this.state
-        const { isAudioPlaying } = this.props
-
+        const { playContent, trackIndex, isShuffleActive, isPlayListMenuOpen, repeatMode } = this.state
+        const { isAudioPlaying } = this.props.player
+        const { userLikes } = this.props.user
+        console.log(this.state)
+        console.log(this.props)
         return (
             <>
                 <div className="audio-player-container">
@@ -187,8 +202,38 @@ class AudioPlayer extends Component {
                         </div>
                     </div>
                     <div className="audio-player-side">
+                        <MdFavoriteBorder
+                            className={`player-icon med ${userLikes[playContent.trackId] && 'liked'}`}
+                            onClick={() => {
+                                console.log(userLikes[playContent.trackId])
+                                if (userLikes[playContent.trackId]) {
+                                    console.log('liked')
+                                } else {
+                                    console.log('not liked')
+                                }
+                            }}
+                        />
+                        {
+                            (repeatMode === 0 || repeatMode === 1) ?
+                                <MdRepeat
+                                    className={`player-icon med ${repeatMode === 0 && 'inactive'}`}
+                                    onClick={() => {
+                                        this.setState({
+                                            repeatMode: repeatMode === 0 ? 1 : repeatMode === 1 ? 2 : 0
+                                        })
+                                    }}
+                                /> :
+                                <MdRepeatOne
+                                    className={`player-icon med ${repeatMode !== 2 && 'inactive'}`}
+                                    onClick={() => {
+                                        this.setState({
+                                            repeatMode: 0
+                                        })
+                                    }}
+                                />
+                        }
                         <MdShuffle
-                            className={`player-icon shuffle ${!isShuffleActive && 'inactive'}`}
+                            className={`player-icon med ${!isShuffleActive && 'inactive'}`}
                             onClick={e => {
                                 this.setState({ isShuffleActive: !isShuffleActive })
                             }}
@@ -213,12 +258,12 @@ class AudioPlayer extends Component {
                             />
                         </div>
                         <div className="playlist-container">
-                            <MdPlaylistPlay className="player-icon playlist"
+                            <MdQueueMusic className="player-icon playlist"
                                 onClick={e => this.setState({ isPlayListMenuOpen: !isPlayListMenuOpen })} />
                             {
-                                this.props.playlist.length > 0 &&
+                                this.props.player.playlist.length > 0 &&
                                 <SortablePlayer
-                                    items={this.props.playlist}
+                                    items={this.props.player.playlist}
                                     onSortEnd={this.onSortEnd}
                                     className={`playlist-menu ${isPlayListMenuOpen && 'open'}`}
                                     onPlayClick={(sTrack, index) => {
@@ -282,8 +327,8 @@ class AudioPlayer extends Component {
     }
 }
 
-const mapStateToProps = function (state) {
-    return state.player
+const mapStateToProps = function ({ player, user }) {
+    return { player, user }
 }
 
 AudioPlayer = (connect(mapStateToProps, { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist })(AudioPlayer))
