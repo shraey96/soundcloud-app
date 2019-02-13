@@ -79,7 +79,7 @@ class AudioPlayer extends Component {
 
     seekTrack = (type) => {
         const { trackIndex, repeatMode } = this.state
-        const { playlist } = this.props
+        const { playlist } = this.props.player
         if (type === 'next') {
             if (trackIndex >= 0) {
                 if (repeatMode === 2) {
