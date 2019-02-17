@@ -104,12 +104,25 @@ const getUserPlayHistory = (url) => {
     })
 }
 
+const updatePlayhistory = (trackPayload) => {
+    axios({
+        method: 'post',
+        url: proxyURL + `https://api-v2.soundcloud.com/me/play-history?client_id=${appBase.clientId}`,
+        data: trackPayload,
+        config: { headers: { 'Content-Type': 'application/json' } }
+    }).then((response) => {
+
+    }).catch((err) => {
+        console.log(err)
+    })
+}
+
 const formatAudioTime = (time) => {
     // time = Math.round(time)
-    var hrs = ~~(time / 3600);
-    var mins = ~~((time % 3600) / 60);
-    var secs = ~~time % 60;
-    var ret = "";
+    let hrs = ~~(time / 3600);
+    let mins = ~~((time % 3600) / 60);
+    let secs = ~~time % 60;
+    let ret = "";
 
     if (hrs > 0) {
         ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
@@ -127,5 +140,6 @@ export {
     getUserFollowings,
     getUserPlayHistory,
     getUserInfo,
-    getUserPlaylist
+    getUserPlaylist,
+    updatePlayhistory
 }

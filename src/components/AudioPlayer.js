@@ -12,8 +12,12 @@ import {
     MdFavorite
 } from 'react-icons/md'
 
-import { formatAudioTime } from '../utils'
-import { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, toggleTrackLike } from '../actions'
+import { formatAudioTime, updatePlayhistory } from '../utils'
+
+import {
+    playAudio, setPlaylist, reOrderPlaylist,
+    toggleReorderPlaylist, toggleTrackLike
+} from '../actions'
 
 import appBase from '../secret'
 
@@ -130,6 +134,9 @@ class AudioPlayer extends Component {
             },
         }, () => {
             this._audio.play()
+            updatePlayhistory({
+                "track_urn": `soundcloud:tracks:${track.id}`
+            })
         })
     }
 

@@ -8,7 +8,8 @@ import {
     getUserFollowings,
     getUserPlayHistory,
     getUserInfo,
-    getUserPlaylist
+    getUserPlaylist,
+    updatePlayhistory
 } from '../utils'
 
 import { userLoginSuccess, setPlaylist, userAuthLoading } from '../actions'
@@ -79,6 +80,10 @@ class Sidebar extends Component {
                 }
             })
             this.props.setPlaylist(trackList)
+            updatePlayhistory({
+                "context_urn": `soundcloud:playlists:${playlistId}`,
+                "track_urn": `soundcloud:tracks:${trackList[0].track_id}`
+            })
         }
     }
 

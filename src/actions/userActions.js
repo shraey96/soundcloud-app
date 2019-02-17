@@ -56,8 +56,12 @@ export const toggleTrackLike = (track) => dispatch => {
         url: appBase.proxyURL + `https://api-v2.soundcloud.com/users/${userId}/track_likes/${trackId}?client_id=${appBase.clientId}`,
         data: {},
     }).then(response => {
-        if (response.status === 200) {
-
+        if (response.status !== 200) {
+            delete userLikeList[track.trackId]
+            dispatch({
+                type: UPDATE_USER_LIKES,
+                payload: userLikeList
+            })
         }
     }).catch(err => {
         console.log(err)
