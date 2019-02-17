@@ -6,13 +6,13 @@ import {
 import { MdClose, MdPlayArrow, MdPause } from 'react-icons/md'
 import deepEqual from 'deep-equal'
 
-const SortableItem = SortableElement(({ item, trackId, onRemoveClick, onPlayClick, index, isAudioPlaying }) => {
+const SortableItem = SortableElement(({ item, trackId, onRemoveClick, onPlayClick, trackIndex, isAudioPlaying }) => {
     return (
         <div
             className="sortable-playlist-tracks"
             onClick={e => {
                 onPlayClick &&
-                    onPlayClick(item, index)
+                    onPlayClick(item, trackIndex)
             }}
         >
             <img src={item.track.artwork_url || require('../static/artwork_alt.png')} />
@@ -74,17 +74,21 @@ class SortablePlayer extends Component {
                 className={className}
                 ref={player => this._sortPlayer = player}
             >
-                {items.map((item, index) => (
-                    <SortableItem
-                        key={`item-${index}`}
-                        index={index}
-                        item={item}
-                        onPlayClick={(track, index) => onPlayClick && onPlayClick(track, index)}
-                        onRemoveClick={track => onRemoveClick && onRemoveClick(track)}
-                        trackId={trackId}
-                        isAudioPlaying={isAudioPlaying}
-                    />
-                ))}
+                {items.map((item, i) => {
+                    return (
+                        <SortableItem
+                            key={`item-${i}`}
+                            trackIndex={i}
+                            item={item}
+                            onPlayClick={(track, trackIndex) => onPlayClick && onPlayClick(track, trackIndex)}
+                            onRemoveClick={track => onRemoveClick && onRemoveClick(track)}
+                            trackId={trackId}
+                            isAudioPlaying={isAudioPlaying}
+                            index={i}
+                        />
+                    )
+                }
+                )}
             </div>
         )
     }

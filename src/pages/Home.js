@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-
-import { AudioPlayer } from '../components'
+import axios from 'axios'
 
 import {
     getUserLikedTracks,
@@ -24,9 +23,15 @@ class Home extends Component {
         }
     }
 
+    componentDidMount() {
+
+    }
+
     render() {
         return (
-            <div />
+            <div className="app-home-container">
+                <p>Test</p>
+            </div>
         );
     }
 }

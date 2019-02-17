@@ -39,7 +39,6 @@ class AudioPlayer extends Component {
 
     componentDidMount() {
         window.addEventListener("keydown", this.handleKeyDown)
-        console.log(appBase)
     }
 
     componentWillUnmount() {
@@ -80,8 +79,10 @@ class AudioPlayer extends Component {
     seekTrack = (type) => {
         const { trackIndex, repeatMode } = this.state
         const { playlist } = this.props.player
+        console.log(type)
         if (type === 'next') {
             if (trackIndex >= 0) {
+                console.log(trackIndex)
                 if (repeatMode === 2) {
                     this.setPlayContent(playlist[this.state.trackIndex].track)
                 } else if (repeatMode === 1 && trackIndex === (playlist.length - 1)) {
@@ -91,6 +92,7 @@ class AudioPlayer extends Component {
                         this.setPlayContent(playlist[0].track)
                     })
                 } else {
+                    console.log(999)
                     this.setState({
                         trackIndex: this.state.trackIndex + 1,
                     }, () => {
@@ -139,12 +141,11 @@ class AudioPlayer extends Component {
     render() {
         const { playContent, trackIndex, isShuffleActive, isPlayListMenuOpen, repeatMode } = this.state
         const { isAudioPlaying } = this.props.player
-        const { userLikes } = this.props.user
-        // console.log(this.state)
-        // console.log(this.props)
+        const { userLikes, loading } = this.props.user
+
         return (
             <>
-                <div className="audio-player-container">
+                <div className={`audio-player-container ${loading && 'hidden'}`}>
                     <div className="audio-player-info-container">
                         <img src={playContent.coverArt} />
                         <div>
@@ -201,10 +202,8 @@ class AudioPlayer extends Component {
                             className={`player-icon inactive med ${userLikes[playContent.trackId] && 'liked'}`}
                             onClick={() => {
                                 if (userLikes[playContent.trackId]) {
-                                    console.log('liked')
                                     this.props.toggleTrackLike(playContent, false)
                                 } else {
-                                    console.log('not liked')
                                     this.props.toggleTrackLike(playContent, true)
                                 }
                             }}
@@ -298,7 +297,6 @@ class AudioPlayer extends Component {
                     onPause={e => {
                         isAudioPlaying && this.props.playAudio(playContent.trackId)
                     }}
-                    onEnded={() => this.randomizeTrack()}
                     onLoadedMetadata={e => {
                         // console.log(e, e.duration)
                     }}

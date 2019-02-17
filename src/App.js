@@ -37,9 +37,11 @@ class App extends Component {
       <>
         <Sidebar />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <div className="app-home">
+            <Route exact path="/" component={Home} />
+            <PrivateRoute exact path="/me/:id/:section?" component={Me} />
+          </div>
           <Route exact path="/callback" component={Callback} />
-          <PrivateRoute exact path="/me/:id/:section?" component={Me} />
         </Switch>
         <AudioPlayer />
       </>
