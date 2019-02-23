@@ -5,6 +5,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "deep-equal": "^1.0.1",
+    "express": "^4.16.4",
     "lodash": "^4.17.11",
     "node-sass": "^4.11.0",
     "query-string": "^6.2.0",
@@ -24,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "start-s": "node server.js"
   },
   "eslintConfig": {
     "extends": "react-app"

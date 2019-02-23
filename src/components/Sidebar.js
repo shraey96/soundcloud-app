@@ -47,6 +47,7 @@ class Sidebar extends Component {
 
     handleAuth = () => {
         SC.connect().then(() => {
+            console.log(999)
             this.fetchUserData()
         })
     }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Sidebar, AudioPlayer } from './components'
-import { Home, Callback, Me } from './pages'
+import { Home, Callback } from './pages'
 import './scss/styles.scss'
 
 let SC = window.SC
@@ -37,11 +37,11 @@ class App extends Component {
       <>
         <Sidebar />
         <Switch>
+          <Route exact path="/callback" component={Callback} />
           <div className="app-home">
             <Route exact path="/" component={Home} />
-            <PrivateRoute exact path="/me/:id/:section?" component={Me} />
+            {/* <PrivateRoute exact path="/me/:id/:section?" component={Me} /> */}
           </div>
-          <Route exact path="/callback" component={Callback} />
         </Switch>
         <AudioPlayer />
       </>
