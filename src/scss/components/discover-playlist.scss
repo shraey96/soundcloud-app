@@ -1,0 +1,57 @@
+.discover-container-parent{
+    .icon-scroll{
+        font-size: 40px;
+        color: #fff;
+        position: absolute;
+        top: 71px;
+        left: -10px;
+        cursor: pointer;
+        &.left{
+            left: -10px;
+        }
+        &.right{
+            left: unset;
+            right: -10px;
+        }
+    }
+}
+
+.discover-container{
+    display: flex;
+    align-items: center;
+    max-width: calc(100vw - 300px);
+    overflow-x: auto;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 20px 10px;
+    position: relative;
+    &--individual{
+        &:not(:last-child){
+            margin-right: 20px;
+        }
+        img{
+            width: 130px;
+            height: 130px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            &:hover{
+                transform: scale(1.2);
+            }
+        }
+        span{
+            display: block;
+            overflow: hidden;
+            white-space: nowrap;
+            display: block;
+            text-overflow: ellipsis;
+            width: 100px;
+        }
+        &--title{
+        }
+        &--user{
+            margin-top: 4px;
+        }
+    }
+}

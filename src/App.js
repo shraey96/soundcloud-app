@@ -40,7 +40,6 @@ class App extends Component {
           <Route exact path="/callback" component={Callback} />
           <div className="app-home">
             <Route exact path="/" component={Home} />
-            {/* <PrivateRoute exact path="/me/:id/:section?" component={Me} /> */}
           </div>
         </Switch>
         <AudioPlayer />

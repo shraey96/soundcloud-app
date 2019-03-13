@@ -307,7 +307,7 @@ class AudioPlayer extends Component {
                     onLoadedMetadata={e => {
                         // console.log(e, e.duration)
                     }}
-                    ref={(a) => this._audio = a}
+                    ref={a => this._audio = a}
                     onTimeUpdate={e => {
                         this.setState({
                             playContent: {
