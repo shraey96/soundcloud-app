@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Slider from 'react-slick'
 import {
-    MdSkipNext,
-    MdSkipPrevious
+    MdSkipNext, MdSkipPrevious,
+    MdPlayArrow, MdPause,
 } from 'react-icons/md'
 
 
@@ -47,6 +47,9 @@ class DiscoverPlaylist extends Component {
                                     <span className="discover-container--individual--user">
                                         {item.user.username}
                                     </span>
+                                    <MdPlayArrow
+                                        className="discover-container--individual--play"
+                                    />
                                 </div>
                             )
                         })

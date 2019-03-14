@@ -13,6 +13,7 @@ import {
 } from '../utils'
 
 import { userLoginSuccess, setPlaylist, userAuthLoading } from '../actions'
+import appBase from '../secret'
 
 let SC = window.SC
 
@@ -72,7 +73,7 @@ class Sidebar extends Component {
     }
 
     setUserPlaylist = async (playlistId) => {
-        const playlistTracks = await axios.get(this.proxyUrl + `https://api.soundcloud.com/playlists/${playlistId}?client_id=a281614d7f34dc30b665dfcaa3ed7505`)
+        const playlistTracks = await axios.get(this.proxyUrl + `https://api.soundcloud.com/playlists/${playlistId}?client_id=${appBase.clientId}`)
         if (playlistTracks.data.tracks.length > 0) {
             const trackList = [...playlistTracks.data.tracks].map((t) => {
                 return {

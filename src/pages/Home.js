@@ -56,8 +56,10 @@ class Home extends Component {
 
     render() {
         const { loading, playListDiscover } = this.state
+        console.log('render', this.state)
         return (
-            <div className="app-home-container">
+            <>
+                <div style={{ background: `url(${require('../static/imgs/img_1.jpeg')})` }} className="app-home-overlay" />
                 {
                     !loading && playListDiscover.length > 0 &&
                     (
@@ -68,7 +70,7 @@ class Home extends Component {
                         })
                     )
                 }
-            </div>
+            </>
         );
     }
 }
