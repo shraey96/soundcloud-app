@@ -1,5 +1,21 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
+
+import { NavLink, withRouter } from 'react-router-dom'
 import Slider from 'react-slick'
+import { setPlaylist, playAudio } from '../actions'
+
+import {
+    getUserLikedTracks,
+    getUserFollowers,
+    getUserFollowings,
+    getUserPlayHistory,
+    getUserInfo,
+    getUserPlaylist,
+    updatePlayhistory,
+    getPlaylist
+} from '../utils'
+
 import {
     MdSkipNext, MdSkipPrevious,
     MdPlayArrow, MdPause,
@@ -7,6 +23,13 @@ import {
 
 
 class DiscoverPlaylist extends Component {
+
+    constructor() {
+        super()
+        this.state = {
+            activePlayList: null
+        }
+    }
 
 
     scrollContainer = (type = "right") => {
@@ -23,8 +46,23 @@ class DiscoverPlaylist extends Component {
         document.querySelector('.discover-container').scrollLeft = 500
     }
 
+    handlePlaylistPlay = (playlistId) => {
+        this.setState({
+            activePlayList: playlistId
+        }, () => {
+            getPlaylist(playlistId)
+                .then(trackList => {
+                    this.props.setPlaylist(trackList)
+                    this.props.playAudio(trackList[0].track_id)
+                })
+        })
+    }
+
     render() {
+        const { playAudio, activeTrackId, isAudioPlaying } = this.props
         const { playlists } = this.props.playlistItem
+        const { activePlayList } = this.state
+
         return (
             <div className="discover-container-parent">
                 {/* <MdSkipPrevious
@@ -47,9 +85,19 @@ class DiscoverPlaylist extends Component {
                                     <span className="discover-container--individual--user">
                                         {item.user.username}
                                     </span>
-                                    <MdPlayArrow
-                                        className="discover-container--individual--play"
-                                    />
+                                    {
+                                        (activePlayList !== null && activePlayList === item.id && isAudioPlaying)
+                                            ?
+                                            <MdPause
+                                                className="discover-container--individual--play"
+                                                onClick={() => playAudio(activeTrackId)}
+                                            />
+                                            :
+                                            <MdPlayArrow
+                                                className="discover-container--individual--play"
+                                                onClick={() => this.handlePlaylistPlay(item.id)}
+                                            />
+                                    }
                                 </div>
                             )
                         })
@@ -67,4 +115,12 @@ class DiscoverPlaylist extends Component {
 
 }
 
+const mapStateToProps = function (state) {
+    return state.player
+}
+
+DiscoverPlaylist = withRouter((connect(mapStateToProps, { setPlaylist, playAudio })(DiscoverPlaylist)))
+
 export { DiscoverPlaylist }
+
+// export { DiscoverPlaylist }

@@ -26,6 +26,10 @@ class Home extends Component {
         }
     }
 
+    componentDidMount() {
+        this.fetchData()
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.userProfile.id !== nextProps.userProfile.id) {
             this.fetchData()

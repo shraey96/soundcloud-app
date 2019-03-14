@@ -45,6 +45,16 @@ class AudioPlayer extends Component {
         window.addEventListener("keydown", this.handleKeyDown)
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.player.isAudioPlaying !== this.props.player.isAudioPlaying) {
+            console.log(999)
+            // this.props.player.isAudioPlaying ?
+            //     this._audio.play()
+            //     :
+            //     this._audio.pause()
+        }
+    }
+
     componentWillUnmount() {
         window.remove("keydown", this.handleKeyDown)
     }

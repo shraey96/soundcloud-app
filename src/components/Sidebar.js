@@ -9,10 +9,11 @@ import {
     getUserPlayHistory,
     getUserInfo,
     getUserPlaylist,
-    updatePlayhistory
+    updatePlayhistory,
+    getPlaylist
 } from '../utils'
 
-import { userLoginSuccess, setPlaylist, userAuthLoading } from '../actions'
+import { userLoginSuccess, setPlaylist, userAuthLoading, playAudio } from '../actions'
 import appBase from '../secret'
 
 let SC = window.SC
@@ -72,21 +73,12 @@ class Sidebar extends Component {
             })
     }
 
-    setUserPlaylist = async (playlistId) => {
-        const playlistTracks = await axios.get(this.proxyUrl + `https://api.soundcloud.com/playlists/${playlistId}?client_id=${appBase.clientId}`)
-        if (playlistTracks.data.tracks.length > 0) {
-            const trackList = [...playlistTracks.data.tracks].map((t) => {
-                return {
-                    track_id: t.id,
-                    track: t
-                }
+    setUserPlaylist = (playlistId) => {
+        getPlaylist(playlistId)
+            .then(trackList => {
+                this.props.setPlaylist(trackList)
+                this.props.playAudio(trackList[0].track_id)
             })
-            this.props.setPlaylist(trackList)
-            updatePlayhistory({
-                "context_urn": `soundcloud:playlists:${playlistId}`,
-                "track_urn": `soundcloud:tracks:${trackList[0].track_id}`
-            })
-        }
     }
 
     render() {
@@ -179,6 +171,6 @@ const mapStateToProps = function (state) {
     return state.user
 }
 
-Sidebar = withRouter((connect(mapStateToProps, { userLoginSuccess, setPlaylist, userAuthLoading })(Sidebar)))
+Sidebar = withRouter((connect(mapStateToProps, { userLoginSuccess, setPlaylist, userAuthLoading, playAudio })(Sidebar)))
 
 export { Sidebar };

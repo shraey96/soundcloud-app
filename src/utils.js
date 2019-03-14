@@ -104,6 +104,31 @@ const getUserPlayHistory = (url) => {
     })
 }
 
+const getPlaylist = (playlistId) => {
+    let trackList = []
+    return axios({
+        method: 'get',
+        url: proxyURL + `https://api.soundcloud.com/playlists/${playlistId}?client_id=${appBase.clientId}`,
+        config: { headers: { 'Content-Type': 'application/json' } }
+    }).then((playlistTracks) => {
+        if (playlistTracks.data.tracks.length > 0) {
+            trackList = [...playlistTracks.data.tracks].map((t) => {
+                return {
+                    track_id: t.id,
+                    track: t
+                }
+            })
+            updatePlayhistory({
+                "context_urn": `soundcloud:playlists:${playlistId}`,
+                "track_urn": `soundcloud:tracks:${trackList[0].track_id}`
+            })
+            return trackList
+        }
+    }).catch((err) => {
+        console.log(err)
+    })
+}
+
 const updatePlayhistory = (trackPayload) => {
     axios({
         method: 'post',
@@ -141,5 +166,6 @@ export {
     getUserPlayHistory,
     getUserInfo,
     getUserPlaylist,
-    updatePlayhistory
+    updatePlayhistory,
+    getPlaylist
 }
