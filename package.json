@@ -22,11 +22,11 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start-s": "node server.js"
+    "start-s": "react-scripts start"
   },
   "eslintConfig": {
     "extends": "react-app"
