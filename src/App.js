@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Sidebar, AudioPlayer } from './components'
-import { Home, Callback } from './pages'
+import { Home, Callback, User } from './pages'
 import './scss/styles.scss'
 import appBase from './secret'
 let SC = window.SC
@@ -41,6 +41,7 @@ class App extends Component {
           <div className="app-home">
             <div className="app-home-container">
               <Route exact path="/" component={Home} />
+              <Route exact path="/user/:permalink" component={User} />
             </div>
           </div>
         </Switch>

@@ -3,7 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom'
 
 
 
-class Me extends Component {
+class User extends Component {
     render() {
         return (
             <div>
@@ -13,15 +13,6 @@ class Me extends Component {
     }
 }
 
-Me = withRouter(Me)
+User = withRouter(User)
 
-export { Me }
-
-// <Switch>
-//                 <Route exact path="/manage/teams">
-//                     <TeamsListing />
-//                 </Route>
-//                 <Route>
-//                     <ErrorScreen />
-//                 </Route>
-//             </Switch>
+export { User }

@@ -60,17 +60,15 @@ class Home extends Component {
 
     render() {
         const { loading, playListDiscover } = this.state
-        console.log('render', this.state)
         return (
             <>
                 <div style={{ background: `url(${require('../static/imgs/img_1.jpeg')})` }} className="app-home-overlay" />
+                <h4>Popular playlists from the SoundCloud community</h4>
                 {
                     !loading && playListDiscover.length > 0 &&
                     (
                         playListDiscover.map((item) => {
-                            return (
-                                <DiscoverPlaylist playlistItem={item} key={item.id} />
-                            )
+                            return <DiscoverPlaylist playlistItem={item} key={item.id} title={item.title} />
                         })
                     )
                 }

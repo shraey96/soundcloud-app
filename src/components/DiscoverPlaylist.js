@@ -5,6 +5,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 import Slider from 'react-slick'
 import { setPlaylist, playAudio } from '../actions'
 
+
 import {
     getUserLikedTracks,
     getUserFollowers,
@@ -59,7 +60,7 @@ class DiscoverPlaylist extends Component {
     }
 
     render() {
-        const { playAudio, activeTrackId, isAudioPlaying } = this.props
+        const { playAudio, activeTrackId, isAudioPlaying, title } = this.props
         const { playlists } = this.props.playlistItem
         const { activePlayList } = this.state
 
@@ -71,11 +72,13 @@ class DiscoverPlaylist extends Component {
                     }}
                     className="icon-scroll left"
                 /> */}
+                <h4>{title}</h4>
                 <div className="discover-container"
                     ref={a => this.discoverContainerRef = a}
                 >
                     {
                         playlists.map((item) => {
+                            // console.log(item.user.id, item.user.permalink)
                             return (
                                 <div className="discover-container--individual"
                                     key={item.id}
@@ -122,5 +125,3 @@ const mapStateToProps = function (state) {
 DiscoverPlaylist = withRouter((connect(mapStateToProps, { setPlaylist, playAudio })(DiscoverPlaylist)))
 
 export { DiscoverPlaylist }
-
-// export { DiscoverPlaylist }

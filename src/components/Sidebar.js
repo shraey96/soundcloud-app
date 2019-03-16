@@ -171,6 +171,6 @@ const mapStateToProps = function (state) {
     return state.user
 }
 
-Sidebar = withRouter((connect(mapStateToProps, { userLoginSuccess, setPlaylist, userAuthLoading, playAudio })(Sidebar)))
+Sidebar = ((connect(mapStateToProps, { userLoginSuccess, setPlaylist, userAuthLoading, playAudio })(Sidebar)))
 
 export { Sidebar };
