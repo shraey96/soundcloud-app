@@ -47,6 +47,13 @@
         display: flex;
         align-items: center;
         margin-bottom: 30px;
+        a{
+            display: flex;
+            align-items: center;
+            &:visited, &:link{
+                color: #fff;
+            }
+        }
         img{
             height: 45px;
             width: 45px;

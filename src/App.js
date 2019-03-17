@@ -40,8 +40,9 @@ class App extends Component {
           <Route exact path="/callback" component={Callback} />
           <div className="app-home">
             <div className="app-home-container">
+              <div style={{ background: `url(${require('./static/imgs/img_1.jpeg')})` }} className="app-home-overlay" />
               <Route exact path="/" component={Home} />
-              <Route exact path="/user/:permalink" component={User} />
+              <Route exact path="/user/:permalink/:section?" component={User} />
             </div>
           </div>
         </Switch>

@@ -25,6 +25,7 @@ class Sidebar extends Component {
         this.publicSections = [
             { label: 'Top 50', link: '/charts' },
             { label: 'Explore', link: '/explore' },
+            { label: 'Home', link: '/' },
         ]
         this.privateSections = [
             { label: 'Likes', link: '/likes' },
@@ -83,11 +84,11 @@ class Sidebar extends Component {
 
     render() {
         const { userAuth, userProfile, loading, userPlaylist } = this.props
-        const { username, avatar_url } = userProfile
+        const { username, avatar_url, permalink } = userProfile
         console.log(this.props)
 
         if (loading) {
-            return <h1>Loading ...</h1>
+            return ''
         }
 
         return (
@@ -96,8 +97,10 @@ class Sidebar extends Component {
                     {
                         userAuth ?
                             <div className="user-info-section">
-                                <img src={avatar_url} alt="user-img" />
-                                <p>{username}</p>
+                                <NavLink exact to={`/user/${permalink}`}>
+                                    <img src={avatar_url} alt="user-img" />
+                                    <p>{username}</p>
+                                </NavLink>
                             </div> :
                             <button onClick={() => this.handleAuth()}>Login SoundCloud</button>
                     }
@@ -171,6 +174,6 @@ const mapStateToProps = function (state) {
     return state.user
 }
 
-Sidebar = ((connect(mapStateToProps, { userLoginSuccess, setPlaylist, userAuthLoading, playAudio })(Sidebar)))
+Sidebar = (connect(mapStateToProps, { userLoginSuccess, setPlaylist, userAuthLoading, playAudio })(Sidebar))
 
 export { Sidebar };

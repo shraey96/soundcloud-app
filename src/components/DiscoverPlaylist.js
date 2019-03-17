@@ -85,7 +85,9 @@ class DiscoverPlaylist extends Component {
                                 >
                                     <img src={(item.artwork_url && item.artwork_url.replace('large.jpg', 't300x300.jpg')) || require('../static/artwork_alt.png')} />
                                     <span className="discover-container--individual--title">{item.title}</span>
-                                    <span className="discover-container--individual--user">
+                                    <span
+                                        onClick={() => this.props.history.push(`/user/${item.user.permalink}`, { userId: item.user.id })}
+                                        className="discover-container--individual--user">
                                         {item.user.username}
                                     </span>
                                     {

@@ -47,7 +47,7 @@ class AudioPlayer extends Component {
 
     componentDidUpdate(prevProps) {
         if (prevProps.player.isAudioPlaying !== this.props.player.isAudioPlaying) {
-            console.log(999)
+            // console.log(999)
             // this.props.player.isAudioPlaying ?
             //     this._audio.play()
             //     :
@@ -56,7 +56,7 @@ class AudioPlayer extends Component {
     }
 
     componentWillUnmount() {
-        window.remove("keydown", this.handleKeyDown)
+        window.removeEventListener("keydown", this.handleKeyDown)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -346,4 +346,4 @@ AudioPlayer = (connect(mapStateToProps,
     { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, toggleTrackLike }
 )(AudioPlayer))
 
-export { AudioPlayer };
+export { AudioPlayer }

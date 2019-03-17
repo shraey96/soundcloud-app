@@ -5,14 +5,6 @@ import appBase from '../secret'
 
 import { DiscoverPlaylist } from '../components'
 
-import {
-    getUserLikedTracks,
-    getUserFollowers,
-    getUserFollowings,
-    getUserPlayHistory,
-    getUserInfo
-} from '../utils'
-
 import { userLoginSuccess } from '../actions'
 
 class Home extends Component {
@@ -43,13 +35,10 @@ class Home extends Component {
             axios.get(appBase.proxyURL + `https://api-v2.soundcloud.com/selections?
             client_id=${appBase.clientId}&limit=10&offset=0`)
                 .then((response) => {
-                    console.log(response)
                     this.setState({
                         loading: false,
                         playListDiscover: response.data.collection.filter(p => p.tracking_feature_name === "playlist-discovery"),
                         moreOfWhatYouLikeTracks: response.data.collection.filter(t => t.tracking_feature_name === "personalized-tracks")
-                    }, () => {
-                        console.log(this.state)
                     })
                 })
                 .catch(err => {
@@ -62,8 +51,6 @@ class Home extends Component {
         const { loading, playListDiscover } = this.state
         return (
             <>
-                <div style={{ background: `url(${require('../static/imgs/img_1.jpeg')})` }} className="app-home-overlay" />
-                <h4>Popular playlists from the SoundCloud community</h4>
                 {
                     !loading && playListDiscover.length > 0 &&
                     (
@@ -84,4 +71,4 @@ const mapStateToProps = function (state) {
 
 Home = (connect(mapStateToProps, { userLoginSuccess })(Home))
 
-export { Home };
+export { Home }
