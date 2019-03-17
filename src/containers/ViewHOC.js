@@ -8,12 +8,14 @@ const ViewHOC = Component => {
         constructor() {
             super()
             this.containerRef = document.querySelector('.app-home-container')
+            this.headerRef = document.querySelector('.user-container--bottom--content--nav')
             this.dataURL = ''
             this.nextDataHREF = ''
             this.state = {
                 data: [],
                 firstLoad: true,
-                lazyLoadPossible: true
+                lazyLoadPossible: true,
+                showSubHeader: false
             }
         }
 
@@ -29,8 +31,22 @@ const ViewHOC = Component => {
             let offsetHeight = this.containerRef.offsetHeight
             let scrollTop = this.containerRef.scrollTop
             let scrollHeight = this.containerRef.scrollHeight
+            // if (scrollTop >= 358 && !this.state.showSubHeader) {
+            //     this.headerRef.style.position = 'fixed'
+            //     this.headerRef.style.top = 0
+            //     this.setState({
+            //         showSubHeader: true
+            //     })
+            // }
+            // if (scrollTop < 358 && this.state.showSubHeader) {
+            //     this.headerRef.style.position = 'unset'
+            //     this.headerRef.style.top = 'unset'
+            //     this.setState({
+            //         showSubHeader: false
+            //     })
+            // }
             if ((scrollTop / (scrollHeight - offsetHeight)) * 100 > 75) {
-                if (!this.state.loading && this.state.lazyLoadPossible) {
+                if (!this.state.loading && this.state.lazyLoadPossible && this.nextDataHREF !== null) {
                     this.loadData()
                 }
             }
@@ -50,6 +66,7 @@ const ViewHOC = Component => {
                 .then(response => {
                     this.nextDataHREF = response.data.next_href
                     const responseData = [...response.data.collection].filter(item => !item.playlist)
+                    // const filter2 = [...response.data.collection].filter(item => !item.track)
                     this.setState({
                         firstLoad: false,
                         loading: false,
