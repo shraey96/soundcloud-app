@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import appBase from '../../secret'
 
 import Likes from './Likes'
+import Playlists from './Playlists'
 
 class User extends Component {
 
@@ -65,6 +66,7 @@ class User extends Component {
             return ''
         }
 
+        console.log(this.props)
         return (
             <div className="user-container">
                 <div
@@ -129,7 +131,10 @@ class User extends Component {
                             </NavLink>
                         </div>
                         <Switch>
-                            <Route exact path="/user/:permalink/likes" component={(props) => <Likes {...props} userId={userId} />} />
+                            <Route exact path="/user/:permalink/likes"
+                                component={(props) => <Likes {...props} userId={userId} />} />
+                            <Route exact path="/user/:permalink/playlists"
+                                component={(props) => <Playlists {...props} userId={userId} />} />
                         </Switch>
                     </div>
                 </div>
@@ -137,8 +142,6 @@ class User extends Component {
         )
     }
 }
-
-
 
 
 const mapStateToProps = function (state) {

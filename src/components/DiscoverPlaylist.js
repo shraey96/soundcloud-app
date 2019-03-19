@@ -5,15 +5,7 @@ import { NavLink, withRouter } from 'react-router-dom'
 import Slider from 'react-slick'
 import { setPlaylist, playAudio } from '../actions'
 
-
 import {
-    getUserLikedTracks,
-    getUserFollowers,
-    getUserFollowings,
-    getUserPlayHistory,
-    getUserInfo,
-    getUserPlaylist,
-    updatePlayhistory,
     getPlaylist
 } from '../utils'
 
@@ -31,7 +23,6 @@ class DiscoverPlaylist extends Component {
             activePlayList: null
         }
     }
-
 
     scrollContainer = (type = "right") => {
         // this.discoverContainerRef.scrollLeft = 500
@@ -78,7 +69,7 @@ class DiscoverPlaylist extends Component {
                 >
                     {
                         playlists.map((item) => {
-                            // console.log(item.user.id, item.user.permalink)
+                            console.log(item)
                             return (
                                 <div className="discover-container--individual"
                                     key={item.id}

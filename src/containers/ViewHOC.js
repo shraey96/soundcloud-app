@@ -15,12 +15,9 @@ const ViewHOC = Component => {
                 data: [],
                 firstLoad: true,
                 lazyLoadPossible: true,
-                showSubHeader: false
+                showSubHeader: false,
+                loading: false
             }
-        }
-
-        componentDidMount = () => {
-            this.containerRef.addEventListener('scroll', this.handleScroll, false)
         }
 
         componentWillUnmount() {
@@ -55,6 +52,7 @@ const ViewHOC = Component => {
         initView(url) {
             this.dataURL = url
             this.loadData()
+            this.containerRef.addEventListener('scroll', this.handleScroll, false)
         }
 
         loadData = () => {

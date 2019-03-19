@@ -6,7 +6,7 @@ import {
     MdPlayArrow, MdPause,
 } from 'react-icons/md'
 
-let TrackItem = ({ item, activeTrackId }) => {
+let TrackItem = ({ item, activeTrackId, index, playTrack, pauseTrack }) => {
     return (
         <div className="track-item-container">
             <img
@@ -23,12 +23,12 @@ let TrackItem = ({ item, activeTrackId }) => {
                     ?
                     <MdPause
                         className="track-item-container--control play"
-                        onClick={() => console.log('pause')}
+                        onClick={() => pauseTrack(item.track.id)}
                     />
                     :
                     <MdPlayArrow
                         className="track-item-container--control pause"
-                        onClick={() => console.log('play')}
+                        onClick={() => playTrack(index)}
                     />
             }
         </div>

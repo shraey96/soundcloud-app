@@ -44,6 +44,10 @@
         opacity: 0;
         transition: all 0.3s ease-in-out;
         cursor: pointer;
+        &:hover{
+            opacity: 1;
+            top: 25%;
+        }
         &.pause{
 
         }
