@@ -50,7 +50,6 @@ class Sidebar extends Component {
 
     handleAuth = () => {
         SC.connect().then(() => {
-            console.log(999)
             this.fetchUserData()
         })
     }
@@ -85,7 +84,6 @@ class Sidebar extends Component {
     render() {
         const { userAuth, userProfile, loading, userPlaylist } = this.props
         const { username, avatar_url, permalink } = userProfile
-        console.log(this.props)
 
         if (loading) {
             return ''

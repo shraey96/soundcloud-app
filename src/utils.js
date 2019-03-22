@@ -104,7 +104,7 @@ const getUserPlayHistory = (url) => {
     })
 }
 
-const getPlaylist = (playlistId) => {
+const getPlaylist = (playlistId, getFullInfo = false) => {
     let trackList = []
     return axios({
         method: 'get',
@@ -122,7 +122,11 @@ const getPlaylist = (playlistId) => {
                 "context_urn": `soundcloud:playlists:${playlistId}`,
                 "track_urn": `soundcloud:tracks:${trackList[0].track_id}`
             })
-            return trackList
+            if (!getFullInfo) {
+                return trackList
+            } else {
+                return { ...playlistTracks.data, trackList }
+            }
         }
     }).catch((err) => {
         console.log(err)

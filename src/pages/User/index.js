@@ -66,25 +66,26 @@ class User extends Component {
             return ''
         }
 
-        console.log(this.props)
         return (
             <div className="user-container">
                 <div
                     className="user-container--visual"
                     style={userInfo.visuals ? { background: `url(${userInfo.visuals.visuals[0].visual_url})` } : {}}
                 >
-                    <img src={userInfo.avatar_url} alt="user" />
+                    <div className="x">
+                        <img src={userInfo.avatar_url} alt="user" />
+                        <div className="user-container--visual--info">
+                            <span>{userInfo.username}</span>
+                            {userInfo.city && <span>{userInfo.city}</span>}
+                            {userInfo.description && <div className="user-container--visual--info--desc">{userInfo.description}</div>}
+                        </div>
+                    </div>
                 </div>
                 <div className="user-container--sub">
                     <span>{userInfo.followers_count}</span>
                     <button>Follow</button>
                 </div>
                 <div className="user-container--bottom">
-                    <div className="user-container--bottom--info">
-                        <span>{userInfo.username}</span>
-                        {userInfo.city && <span>{userInfo.city}</span>}
-                        {userInfo.description && <span>{userInfo.description}</span>}
-                    </div>
                     <div className="user-container--bottom--content">
                         <div className="user-container--bottom--content--nav">
                             <NavLink
@@ -122,19 +123,21 @@ class User extends Component {
                             >
                                 Stations
                             </NavLink>
-                            <NavLink
+                            {/* <NavLink
                                 exact to={`/user/${this.props.match.params.permalink}/reposts`}
                                 activeClassName="active"
                                 className="user-container--bottom--content--nav--link"
                             >
                                 Reposts
-                            </NavLink>
+                            </NavLink> */}
                         </div>
                         <Switch>
                             <Route exact path="/user/:permalink/likes"
                                 component={(props) => <Likes {...props} userId={userId} />} />
                             <Route exact path="/user/:permalink/playlists"
-                                component={(props) => <Playlists {...props} userId={userId} />} />
+                                component={(props) => <Playlists {...props} userId={userId} type="playlist" />} />
+                            <Route exact path="/user/:permalink/albums"
+                                component={(props) => <Playlists {...props} userId={userId} type="album" />} />
                         </Switch>
                     </div>
                 </div>

@@ -6,7 +6,7 @@ import {
     MdPlayArrow, MdPause,
 } from 'react-icons/md'
 
-let PlaylistItem = ({ item, activePlayList, selfUser, onPlayClick, onPauseClick, isAudioPlaying, activeTrackId }) => {
+let PlaylistItem = ({ item, activePlayList, selfUser, onPlayClick, onPauseClick, isAudioPlaying, activeTrackId, getPlaylistInfo }) => {
 
     let trackObj = {}
     if (selfUser) {
@@ -33,7 +33,12 @@ let PlaylistItem = ({ item, activePlayList, selfUser, onPlayClick, onPauseClick,
             <img
                 src={trackObj.artwork_url}
             />
-            <span className="track-item-container--title">{trackObj.title}</span>
+            <span
+                className="track-item-container--title"
+                onClick={() => getPlaylistInfo(trackObj.id)}
+            >
+                {trackObj.title}
+            </span>
             {
                 (activePlayList !== null && (activePlayList === trackObj.id) && isAudioPlaying)
                     ?
