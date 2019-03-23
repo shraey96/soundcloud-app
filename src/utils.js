@@ -2,11 +2,11 @@ import axios from 'axios'
 import _ from 'lodash'
 import appBase from './secret';
 
-const likedTracks = []
-const followers = []
-const following = []
-const playHistory = []
-const playList = []
+let likedTracks = []
+let followers = []
+let following = []
+let playHistory = []
+let playList = []
 
 const proxyURL = appBase.proxyURL
 
@@ -22,14 +22,19 @@ const getUserLikedTracks = (url, id) => {
         url = `https://api-v2.soundcloud.com/users/${id}/track_likes?limit=200&linked_partitioning=1`
     }
     return axios.get(proxyURL + url).then((response) => {
+        console.log(response.data)
         if (response.data.next_href) {
             likedTracks.push([...response.data.collection])
             return getUserLikedTracks(response.data.next_href)
         } else {
             likedTracks.push([response.data.collection])
-            return _.flattenDeep(likedTracks).reduce((a, b) => {
+            likedTracks = _.flattenDeep(likedTracks).map(t => {
+                t.track.liked_date = t.created_at
+                return t
+            })
+            return (likedTracks).reduce((a, b) => {
                 return a[b.track.id] = b.track, a;
-            }, {});
+            }, {})
         }
     }).catch(err => {
         console.log(err)

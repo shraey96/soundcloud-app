@@ -13,18 +13,23 @@ class Home extends Component {
         super()
         this.state = {
             loading: false,
-            playListDiscover: [],
-            moreOfWhatYouLikeTracks: []
+            playListDiscover: sessionStorage.getItem('home_data') !== null ? JSON.parse(sessionStorage.getItem('home_data')).playListDiscover : [],
+            moreOfWhatYouLikeTracks: sessionStorage.getItem('home_data') !== null ? JSON.parse(sessionStorage.getItem('home_data')).moreOfWhatYouLikeTracks : []
         }
     }
 
     componentDidMount() {
-        this.fetchData()
+        const { playListDiscover, moreOfWhatYouLikeTracks } = this.state
+        if (playListDiscover.length === 0 || moreOfWhatYouLikeTracks.length === 0)
+            this.fetchData()
     }
 
     componentWillReceiveProps(nextProps) {
+        const { playListDiscover, moreOfWhatYouLikeTracks } = this.state
         if (this.props.userProfile.id !== nextProps.userProfile.id) {
-            this.fetchData()
+            // this.fetchData()
+            if (playListDiscover.length === 0 || moreOfWhatYouLikeTracks.length === 0)
+                this.fetchData()
         }
     }
 
@@ -39,6 +44,12 @@ class Home extends Component {
                         loading: false,
                         playListDiscover: response.data.collection.filter(p => p.tracking_feature_name === "playlist-discovery"),
                         moreOfWhatYouLikeTracks: response.data.collection.filter(t => t.tracking_feature_name === "personalized-tracks")
+                    }, () => {
+                        const sessionObj = {
+                            playListDiscover: this.state.playListDiscover,
+                            moreOfWhatYouLikeTracks: this.state.moreOfWhatYouLikeTracks,
+                        }
+                        sessionStorage.setItem('home_data', JSON.stringify(sessionObj))
                     })
                 })
                 .catch(err => {
