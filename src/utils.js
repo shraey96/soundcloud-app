@@ -2,6 +2,11 @@ import axios from 'axios'
 import _ from 'lodash'
 import appBase from './secret';
 
+const pow = Math.pow
+const floor = Math.floor
+const abs = Math.abs
+const log = Math.log
+
 let likedTracks = []
 let followers = []
 let following = []
@@ -22,7 +27,6 @@ const getUserLikedTracks = (url, id) => {
         url = `https://api-v2.soundcloud.com/users/${id}/track_likes?limit=200&linked_partitioning=1`
     }
     return axios.get(proxyURL + url).then((response) => {
-        console.log(response.data)
         if (response.data.next_href) {
             likedTracks.push([...response.data.collection])
             return getUserLikedTracks(response.data.next_href)
@@ -167,8 +171,20 @@ const formatAudioTime = (time) => {
     return ret;
 }
 
+const round = (n, precision) => {
+    var prec = Math.pow(10, precision);
+    return Math.round(n * prec) / prec;
+}
+
+const formatNumber = (n) => {
+    var base = floor(log(abs(n)) / log(1000));
+    var suffix = 'KMB'[base - 1];
+    return suffix ? round(n / pow(1000, base), 2) + suffix : '' + n;
+}
+
 export {
     formatAudioTime,
+    formatNumber,
     getUserLikedTracks,
     getUserFollowers,
     getUserFollowings,

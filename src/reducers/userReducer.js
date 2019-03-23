@@ -36,10 +36,17 @@ export default function (state = initialState, action) {
                 loading: false,
                 ...action.payload
             }
+
         case 'UPDATE_USER_LIKES':
             return {
                 ...state,
                 userLikes: action.payload
+            }
+
+        case 'USER_FOLLOWING':
+            return {
+                ...state,
+                userFollowing: action.payload
             }
 
         default:

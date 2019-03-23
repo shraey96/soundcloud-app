@@ -14,7 +14,7 @@ import appBase from '../secret'
 import axios from 'axios'
 
 
-export const userLoginSuccess = (userObj) => dispatch => {
+export const userLoginSuccess = userObj => dispatch => {
     dispatch
         ({
             type: LOGIN_USER_SUCCESS,
@@ -22,7 +22,7 @@ export const userLoginSuccess = (userObj) => dispatch => {
         })
 }
 
-export const userAuthLoading = (loadingStatus) => dispatch => {
+export const userAuthLoading = loadingStatus => dispatch => {
     dispatch
         ({
             type: USER_AUTH_LOADING,
@@ -30,8 +30,15 @@ export const userAuthLoading = (loadingStatus) => dispatch => {
         })
 }
 
+export const setUserFollowing = followingList => dispatch => {
+    dispatch
+        ({
+            type: USER_FOLLOWING,
+            payload: followingList
+        })
+}
 
-export const toggleTrackLike = (track) => dispatch => {
+export const toggleTrackLike = track => dispatch => {
     const user = store.getState().user
     const userId = user.userProfile.id
     const userLikeList = { ...user.userLikes }

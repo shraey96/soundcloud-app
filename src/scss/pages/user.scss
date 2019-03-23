@@ -11,7 +11,7 @@
         background-position: top left !important;
         background-repeat: no-repeat !important;
         position: relative;
-        .x{
+        &--parent{
             position: absolute;
             top: 133px;
             display: flex;
@@ -25,12 +25,24 @@
                 width: 150px;
                 margin-bottom: 20px;
             }
-            .user-container--visual--info--desc{
+            &--info--desc{
                 margin-top: 20px;
                 padding: 0 20px;
                 max-width: 250px;
                 max-height: calc(100vh - 400px);
                 overflow-y: auto;
+                opacity: 0.5;
+            }
+            &--social{
+                margin-bottom: 20px;
+                a{
+                    display: block;
+                    opacity: 0.5;
+                    transition: all 0.3s ease-in-out;
+                    &:hover{
+                        opacity: 1;
+                    }
+                }
             }
         }
     }

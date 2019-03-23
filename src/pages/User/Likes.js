@@ -67,7 +67,7 @@ class Likes extends Component {
         const { data, userId, firstLoad, playAudio, userProfile } = this.props
         const { userLikes } = this.state
         const selfUser = userId === userProfile.id
-        console.log(this.state, data)
+
         return (
             <div className="user-container--bottom--content--likes">
                 {
