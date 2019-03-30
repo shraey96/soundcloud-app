@@ -1,0 +1,54 @@
+.playlist-info-container--tracks{
+    z-index: 99999999;
+    &--item{
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+        img{
+            transition: all 0.3s ease-in-out;
+            height: 160px;
+            width: 160px;
+            border-radius: 4px;
+            &:hover{
+                transform: scale(1.2);
+                &~svg{
+                    opacity: 1;
+                }
+            }
+        }
+        svg{
+            font-size: 40px;
+            position: absolute;
+            right: 50%;
+            transform: translateX(50%);
+            top: 30%;
+            color: $play_pause_color;
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            &:hover{
+                opacity: 1;
+            }
+        }
+        &--cover-container{
+            position: relative;
+            img{
+                height: 100px;
+                width: 100px;
+            }
+        }
+        &--info{
+            display: flex;
+            flex-direction: column;
+            margin-left: 24px;
+            font-size: 16px;
+            z-index: 999;
+            span{
+                font-size: 13px;
+                opacity: 0.6;
+                cursor: pointer;
+                margin-top: 2px;
+            }
+        }
+    }
+}

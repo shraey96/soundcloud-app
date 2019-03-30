@@ -5,6 +5,8 @@ import { NavLink, withRouter } from 'react-router-dom'
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
+import smoothScroll from 'smoothscroll'
+
 import { PlaylistInfo } from '../components'
 
 import { setPlaylist, playAudio } from '../actions'
@@ -14,7 +16,7 @@ import {
 } from '../utils'
 
 import {
-    MdSkipNext, MdSkipPrevious,
+    MdKeyboardArrowRight, MdKeyboardArrowLeft,
     MdPlayArrow, MdPause,
 } from 'react-icons/md'
 
@@ -32,17 +34,20 @@ class DiscoverPlaylist extends Component {
     }
 
     scrollContainer = (type = "right") => {
-        // this.discoverContainerRef.scrollLeft = 500
-        // const containerScrollOffset = this.discoverContainerRef.scrollLeft === 0 ? 500 : this.discoverContainerRef.scrollLeft
-        // console.log(containerScrollOffset, type)
-        // if (type === "right") {
-        //     console.log(containerScrollOffset, type)
-        //     this.discoverContainerRef.scrollLeft = containerScrollOffset + (140 * 5)
-        // } else if (type === "left") {
-        //     console.log(containerScrollOffset, type)
-        //     this.discoverContainerRef.scrollLeft = containerScrollOffset - (140 * 5)
-        // }
-        document.querySelector('.discover-container').scrollLeft = 500
+        const scrollLeftPosn = this.discoverContainerRef.scrollLeft
+        // let scrollAmount = 0
+        // let slideTimer = setInterval(() => {
+        //     type === 'right' ? this.discoverContainerRef.scrollLeft = scrollLeftPosn + 500 :
+        //         this.discoverContainerRef.scrollLeft = scrollLeftPosn - 500
+        //     scrollAmount += 10;
+        //     if (scrollAmount >= 100) {
+        //         window.clearInterval(slideTimer);
+        //     }
+        // }, 25)
+        // type === 'right' ? this.discoverContainerRef.scrollLeft = scrollLeftPosn + 500 :
+        //     this.discoverContainerRef.scrollLeft = scrollLeftPosn - 500
+        type === 'right' ? this.discoverContainerRef.scrollLeft = scrollLeftPosn + 500 :
+            this.discoverContainerRef.scrollLeft = scrollLeftPosn - 500
     }
 
     handlePlaylistPlay = (playlistId) => {
@@ -83,12 +88,12 @@ class DiscoverPlaylist extends Component {
         return (
             <>
                 <div className="discover-container-parent">
-                    {/* <MdSkipPrevious
-                    onClick={e => {
-                        this.scrollContainer('left')
-                    }}
-                    className="icon-scroll left"
-                /> */}
+                    <MdKeyboardArrowLeft
+                        onClick={e => {
+                            this.scrollContainer('left')
+                        }}
+                        className="icon-scroll left"
+                    />
                     <h4>{title}</h4>
                     <div className="discover-container"
                         ref={a => this.discoverContainerRef = a}
@@ -129,12 +134,12 @@ class DiscoverPlaylist extends Component {
                             })
                         }
                     </div>
-                    {/* <MdSkipNext
-                    onClick={e => {
-                        this.scrollContainer('right')
-                    }}
-                    className="icon-scroll right"
-                /> */}
+                    <MdKeyboardArrowRight
+                        onClick={e => {
+                            this.scrollContainer('right')
+                        }}
+                        className="icon-scroll right"
+                    />
                 </div>
                 <ReactCSSTransitionGroup
                     transitionEnterTimeout={500}

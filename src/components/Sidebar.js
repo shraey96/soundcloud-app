@@ -14,7 +14,6 @@ import {
 } from '../utils'
 
 import { userLoginSuccess, setPlaylist, userAuthLoading, playAudio } from '../actions'
-import appBase from '../secret'
 
 let SC = window.SC
 
@@ -26,13 +25,8 @@ class Sidebar extends Component {
             { label: 'Top 50', link: '/charts' },
             { label: 'Explore', link: '/explore' },
             { label: 'Home', link: '/' },
+            { label: 'Stream', link: '/stream' },
         ]
-        this.privateSections = [
-            { label: 'Likes', link: '/likes' },
-            { label: 'Followers', link: '/followers' },
-            { label: 'Following', link: '/following' },
-        ]
-        this.proxyUrl = 'https://cryptic-ravine-67258.herokuapp.com/'
     }
 
     componentDidMount() {
@@ -49,9 +43,7 @@ class Sidebar extends Component {
 
 
     handleAuth = () => {
-        SC.connect().then(() => {
-            this.fetchUserData()
-        })
+        SC.connect().then(() => this.fetchUserData())
     }
 
     fetchUserData = () => {
@@ -122,33 +114,16 @@ class Sidebar extends Component {
                     <hr />
                     {
                         userAuth &&
-                        <>
-                            <div className="user-private bottomPadding topPadding">
-                                {
-                                    this.privateSections.map((prsec) => {
-                                        return (
-                                            <div className="link-container" key={prsec.link}>
-                                                <NavLink exact to={prsec.link} activeClassName="active">
-                                                    {prsec.label}
-                                                </NavLink>
-                                                <span />
-                                            </div>
-                                        )
-                                    })
-                                }
-                            </div>
-                            <hr />
-                        </>
-                    }
-                    {
-                        userAuth &&
                         <div className="user-playlist topPadding">
                             <p>Your Playlist</p>
                             <div className="user-playlist-container">
                                 {
                                     userPlaylist.length > 0 && userPlaylist.map((track) => {
                                         return (
-                                            <div className="user-playlist-item" key={track.uuid} onClick={e => this.setUserPlaylist(track.playlist.id)}>
+                                            <div className="user-playlist-item"
+                                                key={track.uuid}
+                                                onClick={e => this.setUserPlaylist(track.playlist.id)}
+                                            >
                                                 {track.playlist.title}
                                             </div>
                                         )

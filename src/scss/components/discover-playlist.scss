@@ -1,20 +1,26 @@
 .discover-container-parent{
-    // .icon-scroll{
-    //     font-size: 40px;
-    //     color: #fff;
-    //     position: absolute;
-    //     top: 71px;
-    //     left: -10px;
-    //     cursor: pointer;
-    //     &.left{
-    //         left: -10px;
-    //     }
-    //     &.right{
-    //         left: unset;
-    //         right: -10px;
-    //     }
-    // }
     padding: 10px 20px;
+    position: relative;
+    .icon-scroll{
+        font-size: 30px;
+        color: #fff;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-60%);
+        opacity: 0.4;
+        transition: all 0.4s ease-in-out;
+        cursor: pointer;
+        &:hover{
+            opacity: 1;
+        }
+        &.left{
+            left: -0;
+        }
+        &.right{
+            left: unset;
+            right: -10px;
+        }
+    }
     h4{
         display: inline;
         color: #fff;

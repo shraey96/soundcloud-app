@@ -21,7 +21,7 @@ const ViewHOC = Component => {
         }
 
         componentWillUnmount() {
-            this.containerRef.removeEventListener('scroll', this.handleScroll, false)
+            this.containerRef && this.containerRef.removeEventListener('scroll', this.handleScroll, false)
         }
 
         handleScroll = () => {
@@ -52,7 +52,7 @@ const ViewHOC = Component => {
         initView(url) {
             this.dataURL = url
             this.loadData()
-            this.containerRef.addEventListener('scroll', this.handleScroll, false)
+            this.containerRef && this.containerRef.addEventListener('scroll', this.handleScroll, false)
         }
 
         loadData = () => {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Sidebar, AudioPlayer } from './components'
-import { Home, Callback, User } from './pages'
+import { Home, Callback, User, Stream } from './pages'
 import './scss/styles.scss'
 import appBase from './secret'
 let SC = window.SC
@@ -42,6 +42,7 @@ class App extends Component {
             <div className="app-home-container">
               <div style={{ background: `url(${require('./static/imgs/img_1.jpeg')})` }} className="app-home-overlay" />
               <Route exact path="/" component={Home} />
+              <Route exact path="/stream" component={Stream} />
               <Route exact path="/user/:permalink/:section?" component={User} />
             </div>
           </div>

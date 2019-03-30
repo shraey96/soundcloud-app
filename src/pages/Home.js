@@ -37,9 +37,9 @@ class Home extends Component {
         this.setState({
             loading: false
         }, () => {
-            axios.get(appBase.proxyURL + `https://api-v2.soundcloud.com/selections?
-            client_id=${appBase.clientId}&limit=10&offset=0`)
+            axios.get(appBase.proxyURL + `https://api-v2.soundcloud.com/selections?client_id=${appBase.clientId}&limit=10&offset=0`)
                 .then((response) => {
+                    console.log(response)
                     this.setState({
                         loading: false,
                         playListDiscover: response.data.collection.filter(p => p.tracking_feature_name === "playlist-discovery"),
@@ -60,6 +60,7 @@ class Home extends Component {
 
     render() {
         const { loading, playListDiscover } = this.state
+
         return (
             <>
                 {
