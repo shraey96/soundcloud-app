@@ -104,3 +104,13 @@ a{
     }
   }
  }
+
+
+@mixin hd_fullhd {
+  @media only screen and (min-device-width: 1400px) and (max-device-width: 1920px)
+    { @content; }
+}
+@mixin fullhd_plus {
+  @media only screen and (min-device-width: 1921px)
+  { @content; }
+}

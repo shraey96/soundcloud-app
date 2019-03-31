@@ -91,6 +91,10 @@
             &--likes{
                 display: flex;
                 flex-wrap: wrap;
+                @include hd_fullhd{
+                 width: 60vw;
+                 margin: 0 auto;
+                 }
             }
         }
     }  

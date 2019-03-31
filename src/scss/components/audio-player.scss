@@ -8,10 +8,14 @@
     justify-content: space-between;
     padding: 10px 40px;
     background: rgba(#02020C, 0.7);
-    transition: all 0.4s ease-in-out;
+    transition: all 0.4s ease-in-out, tranform 0.3s ease-in-out;
     z-index: 9999999;
     &.hidden{
         bottom: -80px;
+    }
+
+    &.scale{
+        transform: scale(1.1);
     }
 
     .audio-player-info-container{

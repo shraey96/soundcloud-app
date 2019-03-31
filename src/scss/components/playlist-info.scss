@@ -8,19 +8,25 @@
     padding: 20px;
     width: calc(100% - 300px);
     color: #fff;
+    display: flex;
+    align-items: flex-start;
 
     &--header{
         display: flex;
         align-items: center;
-        margin-bottom: 40px;
+        display: flex;
+        flex-direction: column;
+        margin-right: 50px;
+        position: sticky;
+        top: 0;
         &--cover{
             position: relative;
         }
         &--info{
-            margin-left: 30px;
             display: flex;
             flex-direction: column;
             z-index: 999;
+            margin-top: 10px;
             span{
                 margin-bottom: 6px;
                 &:nth-child(1){
@@ -36,8 +42,8 @@
 
     img{
         transition: all 0.3s ease-in-out;
-        height: 160px;
-        width: 160px;
+        height: 200px;
+        width: 200px;
         border-radius: 4px;
         &:hover{
             transform: scale(1.2);
@@ -73,9 +79,16 @@
             opacity: 1 !important;
         }
     }
+    @include hd_fullhd{
+        &--header{
+        margin-right: 100px;
+        img{
+            height: 380px;
+            width: 380px;
+           }
+        }
+    }
 }
-
-
 
 .playlist-info-overlay{
     position: fixed;

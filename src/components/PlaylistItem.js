@@ -6,7 +6,7 @@ import {
     MdPlayArrow, MdPause,
 } from 'react-icons/md'
 
-let PlaylistItem = ({ item, activePlayList, selfUser, onPlayClick, onPauseClick, isAudioPlaying, activeTrackId, getPlaylistInfo }) => {
+let PlaylistItem = ({ item, activePlaylistId, selfUser, onPlayClick, onPauseClick, isAudioPlaying, activeTrackId, getPlaylistInfo }) => {
 
     let trackObj = {}
     if (selfUser) {
@@ -40,7 +40,7 @@ let PlaylistItem = ({ item, activePlayList, selfUser, onPlayClick, onPauseClick,
                 {trackObj.title}
             </span>
             {
-                (activePlayList !== null && (activePlayList === trackObj.id) && isAudioPlaying)
+                (activePlaylistId !== null && (activePlaylistId === trackObj.id) && isAudioPlaying)
                     ?
                     <MdPause
                         className="track-item-container--control play"

@@ -55,4 +55,11 @@
 
         }
     }
+        @include hd_fullhd{
+            margin: 0 40px 40px 0;
+            img{
+                width: 250px;
+                height: 250px;
+            }
+        }
 }

@@ -11,10 +11,8 @@ import {
 
 let PlaylistInfo = ({ playlistInfo, activeTrackId, index, playTrack, pauseTrack, onClose, history }) => {
 
-    console.log(playlistInfo)
-
     const artworkBg = playlistInfo.artwork_url && playlistInfo.artwork_url.replace('large.jpg', 't500x500.jpg') || require('../static/imgs/img_2.jpeg')
-    const artworkImg = playlistInfo.artwork_url && playlistInfo.artwork_url.replace('large.jpg', 't300x300.jpg') || require('../static/artwork_alt.png')
+    const artworkImg = playlistInfo.artwork_url && playlistInfo.artwork_url.replace('large.jpg', 't500x500.jpg') || require('../static/artwork_alt.png')
 
     return (
         <div>

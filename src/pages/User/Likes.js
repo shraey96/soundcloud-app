@@ -54,13 +54,7 @@ class Likes extends Component {
     handleTrackPlay = index => {
         const { userId, userProfile, data } = this.props
         const trackList = userId === userProfile.id ? this.state.userLikes : data
-        const trackPlaylist = trackList.filter((item, i) => {
-            if (i >= index) {
-                return { ...item, track_id: item.track.id }
-            }
-        })
-        this.props.setPlaylist(trackPlaylist)
-        this.props.playAudio(trackPlaylist[0].track_id)
+        this.props.setPlaylist(trackList, index)
     }
 
     render() {

@@ -14,6 +14,7 @@ import {
 } from '../utils'
 
 import { userLoginSuccess, setPlaylist, userAuthLoading, playAudio } from '../actions'
+import appBase from '../secret';
 
 let SC = window.SC
 
@@ -48,6 +49,7 @@ class Sidebar extends Component {
 
     fetchUserData = () => {
         axios.defaults.headers.common['Authorization'] = 'OAuth ' + localStorage.getItem('sc_accessToken');
+
         this.props.userAuthLoading(true)
         getUserInfo()
             .then(async (userInfo) => {
@@ -68,8 +70,8 @@ class Sidebar extends Component {
     setUserPlaylist = (playlistId) => {
         getPlaylist(playlistId)
             .then(trackList => {
-                this.props.setPlaylist(trackList)
-                this.props.playAudio(trackList[0].track_id)
+                this.props.setPlaylist(trackList, 0, playlistId)
+                // this.props.playAudio(trackList[0].track_id)
             })
     }
 

@@ -14,7 +14,6 @@ const TrackList = withRouter(({ data, history }) => {
                     const trackArtItem = track.track.artwork_url && track.track.artwork_url.replace('large.jpg', 't300x300.jpg') || require('../static/artwork_alt.png')
                     return (
                         <div className="playlist-info-container--tracks--item">
-                            <p>Test</p>
                             <div className="playlist-info-container--tracks--item--cover-container">
                                 <img src={trackArtItem} className="playlist-info-container--tracks--item--cover-container--img" />
                                 <MdPause

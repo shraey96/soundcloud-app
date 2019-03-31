@@ -3,10 +3,10 @@ import { NavLink } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import {
-    MdPlayArrow, MdPause,
+    MdPlayArrow, MdPause
 } from 'react-icons/md'
 
-let TrackItem = ({ item, activeTrackId, index, playTrack, pauseTrack }) => {
+let TrackItem = ({ item, activeTrackId, index, playTrack, pauseTrack, isAudioPlaying }) => {
     return (
         <div className="track-item-container">
             <img
@@ -19,7 +19,7 @@ let TrackItem = ({ item, activeTrackId, index, playTrack, pauseTrack }) => {
                 {item.track.user.username}
             </NavLink>
             {
-                (activeTrackId !== null && (activeTrackId === item.track.id))
+                (activeTrackId !== null && (activeTrackId === item.track.id) && isAudioPlaying)
                     ?
                     <MdPause
                         className="track-item-container--control play"

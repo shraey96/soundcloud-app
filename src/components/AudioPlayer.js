@@ -16,7 +16,8 @@ import { formatAudioTime, updatePlayhistory } from '../utils'
 
 import {
     playAudio, setPlaylist, reOrderPlaylist,
-    toggleReorderPlaylist, toggleTrackLike
+    toggleReorderPlaylist, toggleTrackLike,
+    setTrackIndex
 } from '../actions'
 
 import appBase from '../secret'
@@ -37,7 +38,8 @@ class AudioPlayer extends Component {
             trackIndex: 0,
             isShuffleActive: false,
             repeatMode: 0,
-            isPlayListMenuOpen: false
+            isPlayListMenuOpen: false,
+            scalePlayer: false
         }
     }
 
@@ -45,41 +47,47 @@ class AudioPlayer extends Component {
         window.addEventListener("keydown", this.handleKeyDown)
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.player.isAudioPlaying !== this.props.player.isAudioPlaying) {
-            // console.log(999)
-            // this.props.player.isAudioPlaying ?
-            //     this._audio.play()
-            //     :
-            //     this._audio.pause()
-        }
-    }
-
     componentWillUnmount() {
         window.removeEventListener("keydown", this.handleKeyDown)
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (!deepEqual(nextProps.player.playlist, this.props.player.playlist) && !nextProps.player.playListReOrder) {
-            this.setState({
-                trackIndex: 0
-            }, () => {
-                this.setPlayContent(nextProps.player.playlist[0].track)
-            })
+    componentDidUpdate(prevProps) {
+        if (this.props.player.length <= 0) return
+
+        if (this.props.player.activeTrackIndex !== prevProps.player.activeTrackIndex && !this.props.player.playListReOrder) {
+            this.setPlayContent(this.props.player.playlist[this.props.player.activeTrackIndex].track)
         }
+
+        if (this.props.player.isAudioPlaying !== prevProps.player.isAudioPlaying) {
+            this.props.player.isAudioPlaying
+                ? this._audio.play()
+                : this._audio.pause()
+        }
+
+        if (JSON.stringify(this.props.player.playlist) !== JSON.stringify(prevProps.player.playlist)
+            && !this.props.player.playListReOrder) {
+            this.setState({
+                scalePlayer: true
+            }, () => {
+                setTimeout(() => {
+                    this.setState({
+                        scalePlayer: false
+                    })
+                }, 300)
+            })
+            this.setPlayContent(this.props.player.playlist[this.props.player.activeTrackIndex || 0].track, true)
+        }
+
     }
 
     handleKeyDown = (e) => {
         if (e.keyCode === 32) {
-            this.setState({
-                isAudioPlaying: !this.state.isAudioPlaying
-            }, () => {
-                this.state.isAudioPlaying ? this._audio.pause() : this._audio.play()
-            })
+            // this.props.player.isAudioPlaying ? this._audio.pause() : this._audio.play()
+            this.props.playAudio((this.state.playContent || {}).trackId)
         }
         if (e.ctrlKey) {
-            e.keyCode === 39 && this.seekTrack('next')
-            e.keyCode === 37 && this.seekTrack('prev')
+            e.keyCode === 39 && this.handleTrackSeek('next')
+            e.keyCode === 37 && this.handleTrackSeek('prev')
         }
     }
 
@@ -93,10 +101,8 @@ class AudioPlayer extends Component {
     seekTrack = (type) => {
         const { trackIndex, repeatMode } = this.state
         const { playlist } = this.props.player
-        console.log(type)
         if (type === 'next') {
             if (trackIndex >= 0) {
-                console.log(trackIndex)
                 if (repeatMode === 2) {
                     this.setPlayContent(playlist[this.state.trackIndex].track)
                 } else if (repeatMode === 1 && trackIndex === (playlist.length - 1)) {
@@ -106,7 +112,6 @@ class AudioPlayer extends Component {
                         this.setPlayContent(playlist[0].track)
                     })
                 } else {
-                    console.log(999)
                     this.setState({
                         trackIndex: this.state.trackIndex + 1,
                     }, () => {
@@ -125,7 +130,7 @@ class AudioPlayer extends Component {
         }
     }
 
-    setPlayContent = async (track) => {
+    setPlayContent = async (track, autoPlay = true) => {
         let streamURL = track.stream_url ? track.stream_url + `?client_id=${appBase.clientId}` : ''
         if (streamURL === '') {
             let streamURLProg = track.media.transcodings.find(x => x.format.protocol === "progressive").url
@@ -143,7 +148,7 @@ class AudioPlayer extends Component {
                 duration: (track.duration / 1000),
             },
         }, () => {
-            this._audio.play()
+            this.props.playAudio(track.id)
             updatePlayhistory({
                 "track_urn": `soundcloud:tracks:${track.id}`
             })
@@ -155,14 +160,28 @@ class AudioPlayer extends Component {
         this.props.reOrderPlaylist(playlist)
     }
 
+    handleTrackSeek = (type = 'next') => {
+        const { setTrackIndex, player } = this.props
+        const { activeTrackIndex, playlist } = player
+        if ((type === 'next' && !playlist[activeTrackIndex + 1])
+            || (type === 'prev' && !playlist[activeTrackIndex - 1]))
+            return
+        else {
+            type === 'next' && setTrackIndex('inc')
+            type === 'prev' && setTrackIndex('dec')
+        }
+    }
+
     render() {
-        const { playContent, trackIndex, isShuffleActive, isPlayListMenuOpen, repeatMode } = this.state
-        const { isAudioPlaying } = this.props.player
+        const { playContent, isShuffleActive,
+            isPlayListMenuOpen, repeatMode,
+            scalePlayer } = this.state
+        const { isAudioPlaying, activeTrackIndex } = this.props.player
         const { userLikes, loading } = this.props.user
 
         return (
             <>
-                <div className={`audio-player-container ${loading && 'hidden'}`}>
+                <div className={`audio-player-container ${loading && 'hidden'} ${scalePlayer && 'scale'}`}>
                     <div className="audio-player-info-container">
                         <img src={playContent.coverArt} />
                         <div>
@@ -176,18 +195,14 @@ class AudioPlayer extends Component {
                         <div className="audio-player-seek">
                             <MdSkipPrevious
                                 onClick={e => {
-                                    this.seekTrack('prev')
+                                    this.handleTrackSeek('prev')
                                 }}
-                                disabled={trackIndex === 0}
+                                disabled={activeTrackIndex === 0}
                                 className="player-icon"
                             />
                             <div
                                 className="audio-play-pause"
-                                onClick={e => {
-                                    isAudioPlaying ?
-                                        this._audio.pause() :
-                                        this._audio.play()
-                                }}
+                                onClick={e => this.props.playAudio((playContent || {}).trackId)}
                             >
                                 <span className={isAudioPlaying ? 'animate-pause' : 'animate-play'}>
                                     <MdPlayArrow className="player-icon play-icon" />
@@ -196,7 +211,7 @@ class AudioPlayer extends Component {
                             </div>
                             <MdSkipNext
                                 onClick={e => {
-                                    this.seekTrack('next')
+                                    this.handleTrackSeek('next')
                                 }}
                                 className="player-icon"
                             />
@@ -308,21 +323,17 @@ class AudioPlayer extends Component {
                     controls
                     src={this.state.playContent.streamURL}
                     className="audio-tag"
-                    onPlay={(e) => {
-                        !isAudioPlaying && this.props.playAudio(playContent.trackId)
-                    }}
-                    onPause={e => {
-                        isAudioPlaying && this.props.playAudio(playContent.trackId)
-                    }}
-                    onLoadedMetadata={e => {
-                        // console.log(e, e.duration)
-                    }}
+                    // onPlay={(e) => {
+                    //     !isAudioPlaying && this.props.playAudio(playContent.trackId)
+                    // }}
+                    // onPause={e => {
+                    //     isAudioPlaying && this.props.playAudio(playContent.trackId)
+                    // }}
                     ref={a => this._audio = a}
                     onTimeUpdate={e => {
                         this.setState({
                             playContent: {
                                 ...playContent,
-                                // duration: e.target.duration,
                                 currentTime: e.target.currentTime,
                             }
                         })
@@ -343,7 +354,10 @@ const mapStateToProps = function ({ player, user }) {
 }
 
 AudioPlayer = (connect(mapStateToProps,
-    { playAudio, setPlaylist, reOrderPlaylist, toggleReorderPlaylist, toggleTrackLike }
+    {
+        playAudio, setPlaylist, reOrderPlaylist,
+        toggleReorderPlaylist, toggleTrackLike, setTrackIndex
+    }
 )(AudioPlayer))
 
 export { AudioPlayer }

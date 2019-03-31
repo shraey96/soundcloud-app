@@ -31,9 +31,10 @@ class Playlists extends Component {
     }
 
     componentDidMount() {
-        const { userId, userProfile, type } = this.props
+        const { userId, user, type } = this.props
+        const { userProfile } = user
         if (userId !== userProfile.id) {
-            const { initView, userId } = this.props
+            const { initView } = this.props
             const url = type === 'playlist' ?
                 `https://api-v2.soundcloud.com/users/${userId}/playlists_without_albums?client_id=${appBase.clientId}&limit=40`
                 :
@@ -47,24 +48,16 @@ class Playlists extends Component {
         if (type === 'ablum') {
             const playlistInfo = data.find(a => a.id === playlistId)
             playlistInfo = { ...playlistInfo, trackList: playlistInfo.tracks.map(t => t) }
-            this.setState({
-                activePlayList: playlistId
-            }, () => {
-                this.props.setPlaylist(playlistInfo.trackList)
-                this.props.playAudio(playlistInfo.trackList[0].track_id)
-            })
+            console.log(playlistInfo, 33)
+            this.props.setPlaylist(playlistInfo.trackList, 0, playlistId)
             return
         }
 
-        this.setState({
-            activePlayList: playlistId
-        }, () => {
-            getPlaylist(playlistId)
-                .then(trackList => {
-                    this.props.setPlaylist(trackList)
-                    this.props.playAudio(trackList[0].track_id)
-                })
-        })
+        getPlaylist(playlistId)
+            .then(trackList => {
+                console.log(trackList, 22)
+                this.props.setPlaylist(trackList, 0, playlistId)
+            })
     }
 
     fetchPlaylistInfo = (playlistId) => {
@@ -96,10 +89,11 @@ class Playlists extends Component {
     }
 
     render() {
-        const { firstLoad, userId, userProfile, userPlaylist, data = [], type } = this.props
+        const { firstLoad, user, userId, data = [], type } = this.props
+        const { userProfile, userPlaylist } = user
         const selfUser = userId === userProfile.id
-        const { activePlayList, showPlaylistInfo, playlistInfo } = this.state
-        console.log(this.props)
+        const { showPlaylistInfo, playlistInfo } = this.state
+
         return (
             <>
                 <div className="user-container--bottom--content--likes">
@@ -111,9 +105,8 @@ class Playlists extends Component {
                                         item={item}
                                         key={item.id}
                                         selfUser={selfUser}
-                                        onPlayClick={(playlistId) => this.handlePlaylistPlay(playlistId)}
-                                        activePlayList={activePlayList}
-                                        onPauseClick={(activeTrackId) => this.playAudio(activeTrackId)}
+                                        onPlayClick={(playlistId) => { console.log(22); this.handlePlaylistPlay(playlistId) }}
+                                        onPauseClick={(activeTrackId) => { console.log(11); playAudio(activeTrackId) }}
                                         getPlaylistInfo={(playlistId) => this.fetchPlaylistInfo(playlistId)}
                                     />
                                 )
@@ -125,9 +118,8 @@ class Playlists extends Component {
                                         item={item}
                                         key={item.id}
                                         selfUser={selfUser}
-                                        onPlayClick={(playlistId) => this.handlePlaylistPlay(playlistId)}
-                                        activePlayList={activePlayList}
-                                        onPauseClick={(activeTrackId) => this.playAudio(activeTrackId)}
+                                        onPlayClick={(playlistId) => { console.log(55); this.handlePlaylistPlay(playlistId) }}
+                                        onPauseClick={(activeTrackId) => { console.log(99); playAudio(activeTrackId) }}
                                         getPlaylistInfo={(playlistId) => this.fetchPlaylistInfo(playlistId)}
                                     />
                                 )
@@ -154,7 +146,7 @@ class Playlists extends Component {
 }
 
 const mapStateToProps = function (state) {
-    return state.user
+    return { user: state.user }
 }
 
 Playlists = withRouter(connect(mapStateToProps, { setPlaylist, playAudio })(ViewHOC(Playlists)))

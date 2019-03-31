@@ -4,7 +4,7 @@ import {
     SET_PLAYLIST,
     REORDER_PLAYLIST,
     REORDER_PLAYLIST_TOGGLE,
-    ADD_TRACK
+    ADD_TRACK, SET_TRACK_INDEX
 } from '../constants'
 
 
@@ -27,12 +27,22 @@ export const toggleShuffle = () => {
     }
 }
 
-export const setPlaylist = (playList = []) => {
+export const setPlaylist = (playList = [], trackIndex = 0, playListId = null) => {
     return dispatch => {
         dispatch
             ({
                 type: SET_PLAYLIST,
-                payload: playList
+                payload: { playList, trackIndex, playListId }
+            })
+    }
+}
+
+export const setTrackIndex = (type = 'inc') => {
+    return dispatch => {
+        dispatch
+            ({
+                type: SET_TRACK_INDEX,
+                payload: type
             })
     }
 }
@@ -59,10 +69,3 @@ export const toggleReorderPlaylist = () => {
             })
     }
 }
-
-
-// export {
-//     playAudio,
-//     toggleShuffle,
-//     setPlaylist
-// }
