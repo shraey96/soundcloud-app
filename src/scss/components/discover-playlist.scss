@@ -14,11 +14,12 @@
             opacity: 1;
         }
         &.left{
-            left: -0;
+            top: 35px;
+            right: 30px;
         }
         &.right{
-            left: unset;
-            right: -10px;
+            top: 35px;
+            right: 10px;
         }
     }
     h4{

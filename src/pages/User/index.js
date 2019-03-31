@@ -169,7 +169,65 @@ class User extends Component {
                         className="user-container--visual--parent--followers"
                     >
                         {formatNumber(userInfo.followers_count)} Followers
+                    </NavLink>
+
+                    <div className="user-container--bottom--content--nav">
+                        <NavLink
+                            exact to={`/user/${this.props.match.params.permalink}`}
+                            activeClassName="active"
+                            className={`user-container--bottom--content--nav--link`}
+                        >
+                            Tracks
                             </NavLink>
+                        <NavLink
+                            exact to={`/user/${this.props.match.params.permalink}/albums`}
+                            activeClassName="active"
+                            className={`user-container--bottom--content--nav--link`}
+                        >
+                            Albums
+                            </NavLink>
+                        <NavLink
+                            exact to={`/user/${this.props.match.params.permalink}/likes`}
+                            activeClassName="active"
+                            className="user-container--bottom--content--nav--link"
+                        >
+                            Likes
+                            </NavLink>
+                        <NavLink
+                            exact to={`/user/${this.props.match.params.permalink}/playlists`}
+                            activeClassName="active"
+                            className="user-container--bottom--content--nav--link"
+                        >
+                            Playlists
+                            </NavLink>
+                        {
+                            this.props.match.params.section === "followers" &&
+                            <NavLink
+                                exact to={`/user/${this.props.match.params.permalink}/followers`}
+                                activeClassName="active"
+                                className="user-container--bottom--content--nav--link"
+                            >
+                                Followers
+                            </NavLink>
+                        }
+                        {
+                            this.props.match.params.section === "following" &&
+                            <NavLink
+                                exact to={`/user/${this.props.match.params.permalink}/following`}
+                                activeClassName="active"
+                                className="user-container--bottom--content--nav--link"
+                            >
+                                Following
+                            </NavLink>
+                        }
+                        <NavLink
+                            exact to={`/user/${this.props.match.params.permalink}/stations`}
+                            activeClassName="active"
+                            className="user-container--bottom--content--nav--link"
+                        >
+                            Stations
+                            </NavLink>
+                    </div>
                     <button
                         onClick={() => this.handleFollowToggle(userFollowIndex, userInfo)}
                     >
@@ -182,63 +240,6 @@ class User extends Component {
                 </div>
                 <div className="user-container--bottom">
                     <div className="user-container--bottom--content">
-                        <div className="user-container--bottom--content--nav">
-                            <NavLink
-                                exact to={`/user/${this.props.match.params.permalink}`}
-                                activeClassName="active"
-                                className={`user-container--bottom--content--nav--link`}
-                            >
-                                Tracks
-                            </NavLink>
-                            <NavLink
-                                exact to={`/user/${this.props.match.params.permalink}/albums`}
-                                activeClassName="active"
-                                className={`user-container--bottom--content--nav--link`}
-                            >
-                                Albums
-                            </NavLink>
-                            <NavLink
-                                exact to={`/user/${this.props.match.params.permalink}/likes`}
-                                activeClassName="active"
-                                className="user-container--bottom--content--nav--link"
-                            >
-                                Likes
-                            </NavLink>
-                            <NavLink
-                                exact to={`/user/${this.props.match.params.permalink}/playlists`}
-                                activeClassName="active"
-                                className="user-container--bottom--content--nav--link"
-                            >
-                                Playlists
-                            </NavLink>
-                            {
-                                this.props.match.params.section === "followers" &&
-                                <NavLink
-                                    exact to={`/user/${this.props.match.params.permalink}/followers`}
-                                    activeClassName="active"
-                                    className="user-container--bottom--content--nav--link"
-                                >
-                                    Followers
-                            </NavLink>
-                            }
-                            {
-                                this.props.match.params.section === "following" &&
-                                <NavLink
-                                    exact to={`/user/${this.props.match.params.permalink}/following`}
-                                    activeClassName="active"
-                                    className="user-container--bottom--content--nav--link"
-                                >
-                                    Following
-                            </NavLink>
-                            }
-                            <NavLink
-                                exact to={`/user/${this.props.match.params.permalink}/stations`}
-                                activeClassName="active"
-                                className="user-container--bottom--content--nav--link"
-                            >
-                                Stations
-                            </NavLink>
-                        </div>
                         <Switch>
                             <Route exact path="/user/:permalink/likes"
                                 component={(props) => <Likes {...props} userId={userId} />} />

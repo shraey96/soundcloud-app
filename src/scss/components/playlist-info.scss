@@ -75,6 +75,7 @@
         font-size: 20px !important;
         opacity: 0.4 !important;
         color: #fff !important;
+        z-index: 99999999999;
         &:hover{
             opacity: 1 !important;
         }
@@ -98,7 +99,7 @@
     width: calc(100% - 300px);
     background-repeat: no-repeat !important;
     background-size: cover !important;
-    filter: blur(2px);
+    filter: blur(10px);
     z-index: 999;
     &:before{
         content: '';

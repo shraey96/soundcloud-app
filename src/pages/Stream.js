@@ -43,8 +43,8 @@ class Stream extends Component {
     }
 
     render() {
-        console.log(this.props)
         const { data } = this.props
+
         const x = data.filter(d => d.type === 'track' || d.type === 'track-repost')
         return (
             <div className="user-stream">

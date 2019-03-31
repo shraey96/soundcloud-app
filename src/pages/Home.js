@@ -24,10 +24,9 @@ class Home extends Component {
             this.fetchData()
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentDidUpdate(prevProps) {
         const { playListDiscover, moreOfWhatYouLikeTracks } = this.state
-        if (this.props.userProfile.id !== nextProps.userProfile.id) {
-            // this.fetchData()
+        if (this.props.userProfile.id !== prevProps.userProfile.id) {
             if (playListDiscover.length === 0 || moreOfWhatYouLikeTracks.length === 0)
                 this.fetchData()
         }
