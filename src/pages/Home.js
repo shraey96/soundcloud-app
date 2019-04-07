@@ -41,14 +41,15 @@ class Home extends Component {
                     console.log(response)
                     this.setState({
                         loading: false,
-                        playListDiscover: response.data.collection.filter(p => p.tracking_feature_name === "playlist-discovery"),
-                        moreOfWhatYouLikeTracks: response.data.collection.filter(t => t.tracking_feature_name === "personalized-tracks")
+                        // playListDiscover: response.data.collection.filter(p => p.tracking_feature_name === "playlist-discovery"),
+                        // moreOfWhatYouLikeTracks: response.data.collection.filter(t => t.tracking_feature_name === "personalized-tracks")
+                        // playListDiscover: response.data.collection.filter(p => p.tracking_feature_name === 'personalized-tracks')[0].system_playlists
                     }, () => {
                         const sessionObj = {
                             playListDiscover: this.state.playListDiscover,
                             moreOfWhatYouLikeTracks: this.state.moreOfWhatYouLikeTracks,
                         }
-                        sessionStorage.setItem('home_data', JSON.stringify(sessionObj))
+                        // sessionStorage.setItem('home_data', JSON.stringify(sessionObj))
                     })
                 })
                 .catch(err => {
@@ -59,13 +60,14 @@ class Home extends Component {
 
     render() {
         const { loading, playListDiscover } = this.state
-
+        console.log(playListDiscover)
         return (
             <>
                 {
                     !loading && playListDiscover.length > 0 &&
                     (
                         playListDiscover.map((item) => {
+
                             return <DiscoverPlaylist playlistItem={item} key={item.id} title={item.title} />
                         })
                     )
